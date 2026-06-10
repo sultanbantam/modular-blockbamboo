@@ -121,6 +121,40 @@ export function SaveLoadModal({ onClose }: { onClose: () => void }) {
             );
           })}
         </div>
+        <div className="mt-6 pt-4 border-t border-stone-800 flex justify-between gap-2">
+          <button 
+            onClick={() => {
+              const data = localStorage.getItem('blockbamboo-storage');
+              if (data) {
+                navigator.clipboard.writeText(data);
+                alert("Data berhasil disalin ke Clipboard! Tempel (Paste) kode ini di Pi Browser untuk memindahkannya.");
+              } else {
+                alert("Tidak ada data untuk diekspor.");
+              }
+            }}
+            className="flex-1 py-2 bg-stone-800 hover:bg-stone-700 text-stone-300 rounded text-xs font-bold"
+          >
+            📤 Backup / Export (Copy)
+          </button>
+          <button 
+            onClick={() => {
+              const pasted = prompt("Tempel (Paste) kode data yang sebelumnya Anda salin:");
+              if (pasted) {
+                try {
+                  JSON.parse(pasted); // Validasi JSON
+                  localStorage.setItem('blockbamboo-storage', pasted);
+                  alert("Data berhasil diimpor! Halaman akan dimuat ulang.");
+                  window.location.reload();
+                } catch(e) {
+                  alert("Format data tidak valid!");
+                }
+              }
+            }}
+            className="flex-1 py-2 bg-stone-800 hover:bg-stone-700 text-stone-300 rounded text-xs font-bold"
+          >
+            📥 Import (Paste)
+          </button>
+        </div>
       </div>
     </div>
   );
