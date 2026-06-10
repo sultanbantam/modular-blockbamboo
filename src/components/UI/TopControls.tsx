@@ -30,13 +30,13 @@ export function TopControls() {
             <p className="text-xs text-stone-300">Constructor v1.0</p>
           </div>
           
-          <div className="hidden lg:block">
+          <div className="block scale-90 origin-right lg:scale-100">
             <LevelDisplay className="border-none shadow-none bg-stone-800/50 py-1" />
           </div>
         </div>
 
         {/* Right: Toolbar */}
-        <div className="flex gap-2 items-center overflow-x-auto custom-scrollbar w-full lg:w-auto pb-1 lg:pb-0">
+        <div className="flex gap-2 items-center overflow-x-auto custom-scrollbar w-full lg:w-auto pb-1 lg:pb-0 pt-2 lg:pt-0">
           
           {/* History Group */}
           <div className="flex gap-1 border-r border-stone-700 pr-2">
@@ -133,11 +133,6 @@ export function TopControls() {
           </div>
         </div>
       </header>
-
-      {/* Mobile Level Display (Secondary) */}
-      <div className="lg:hidden absolute top-[100px] left-4 z-40">
-         <LevelDisplay />
-      </div>
 
       {showDashboard && <PiDashboard onClose={() => setShowDashboard(false)} />}
       {showSaveModal && <SaveLoadModal onClose={() => setShowSaveModal(false)} />}
