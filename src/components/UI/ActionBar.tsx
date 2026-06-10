@@ -45,7 +45,7 @@ export function ActionBar() {
 
       <button
         onClick={() => {
-          if (confirm('Hapus blok ini?')) {
+          if (targetId && confirm('Hapus blok ini?')) {
             removeBlock(targetId);
           }
         }}
