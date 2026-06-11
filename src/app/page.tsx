@@ -1,5 +1,6 @@
 "use client";
 
+
 import PiAuth from "@/components/PiAuth";
 import GameCanvas from "@/components/GameCanvas";
 import { CataloguePanel } from "@/components/UI/CataloguePanel";

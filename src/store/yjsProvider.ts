@@ -1,5 +1,6 @@
 import * as Y from 'yjs';
 import { WebrtcProvider } from 'y-webrtc';
+import { WebsocketProvider } from 'y-websocket';
 import { useGameStore, BlockData } from './useGameStore';
 
 class YjsManager {
@@ -8,6 +9,7 @@ class YjsManager {
   public yChatMessages: Y.Array<any>;
   public yState: Y.Map<any>;
   public provider: WebrtcProvider | null = null;
+  public wsProvider: WebsocketProvider | null = null;
   public awareness: any = null;
   public roomId: string | null = null;
   public isApplyingRemote = false;
@@ -74,7 +76,11 @@ class YjsManager {
       }
     });
 
-    this.awareness = this.provider.awareness;
+    // Fallback guaranteed WebSocket relay (if WebRTC fails due to NAT/Firewall)
+    this.wsProvider = new WebsocketProvider('wss://demos.yjs.dev', roomId, this.ydoc);
+
+    // Prefer WebSocket awareness for more reliable cursor/presence sync
+    this.awareness = this.wsProvider.awareness;
 
     // Set local state
     this.awareness.setLocalStateField('user', {
@@ -95,8 +101,13 @@ class YjsManager {
       this.provider.disconnect();
       this.provider.destroy();
       this.provider = null;
-      this.roomId = null;
     }
+    if (this.wsProvider) {
+      this.wsProvider.disconnect();
+      this.wsProvider.destroy();
+      this.wsProvider = null;
+    }
+    this.roomId = null;
   }
 
   // Helpers to mutate Yjs Array from Zustand
