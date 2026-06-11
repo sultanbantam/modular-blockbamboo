@@ -30,8 +30,12 @@ export function TopControls() {
         
         {/* Left: Logo & Level */}
         <div className="flex items-center gap-4 lg:gap-6 w-full lg:w-auto justify-between lg:justify-start mb-2 lg:mb-0">
-          <div className="flex flex-col justify-center">
-            <img src="/logo2.png" alt="enPIneering Logo" className="h-6 md:h-8 w-auto object-contain drop-shadow-md" />
+          <div className="flex items-center gap-3">
+            <img src="/logo2.png" alt="enPIneering Logo" className="h-8 md:h-12 w-auto object-contain drop-shadow-md" />
+            <div className="flex flex-col">
+              <h1 className="text-xl md:text-2xl font-bold text-green-500 drop-shadow-md leading-tight">{t('appTitle')}</h1>
+              <p className="text-xs text-stone-300">{t('appSubtitle')}</p>
+            </div>
           </div>
           
           <div className="block scale-90 origin-right lg:scale-100">
@@ -148,7 +152,7 @@ export function TopControls() {
               </button>
             ))}
             <button 
-                onClick={() => setCameraView(null)}
+                onClick={() => setCameraView('reset')}
                 className="p-1.5 rounded transition-colors text-stone-400 hover:bg-stone-800 hover:text-white"
                 title={t('resetCamera')}
               >

@@ -65,6 +65,7 @@ function Scene() {
         case 'blkng': targetPos.set(0, 2, -distance); break;
         case 'kiri': targetPos.set(-distance, 2, 0); break;
         case 'kanan': targetPos.set(distance, 2, 0); break;
+        case 'reset': targetPos.set(10, 10, 10); break;
       }
       
       camera.position.copy(targetPos);

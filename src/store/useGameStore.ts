@@ -48,7 +48,7 @@ interface GameState {
   transformMode: 'translate' | 'rotate'; // Gizmo mode
   isPanMode: boolean;
   showHelpers: boolean;
-  cameraView: 'atas' | 'depan' | 'blkng' | 'kiri' | 'kanan' | null;
+  cameraView: 'atas' | 'depan' | 'blkng' | 'kiri' | 'kanan' | 'reset' | null;
   pastBlocks: BlockData[][];
   futureBlocks: BlockData[][];
   hoverPos: [number, number, number] | null;
@@ -96,7 +96,7 @@ interface GameState {
   undo: () => void;
   redo: () => void;
   setShowHelpers: (show: boolean) => void;
-  setCameraView: (view: 'atas' | 'depan' | 'blkng' | 'kiri' | 'kanan' | null) => void;
+  setCameraView: (view: 'atas' | 'depan' | 'blkng' | 'kiri' | 'kanan' | 'reset' | null) => void;
 
   addBlock: (block: Omit<BlockData, 'id'>) => void;
   removeBlock: (id: string) => void;

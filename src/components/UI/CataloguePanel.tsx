@@ -75,17 +75,17 @@ export function CataloguePanel() {
 
       <div className={`
         absolute md:left-4 md:top-24 md:w-80 md:max-h-[calc(100vh-7rem)]
-        ${isOpen ? 'left-0 bottom-0 w-full h-[60vh] rounded-t-3xl border-t' : 'hidden md:flex'}
-        bg-stone-800/95 backdrop-blur border-stone-700 md:rounded-xl md:border p-4 pb-8 md:pb-4 flex-col pointer-events-auto shadow-2xl z-40 transition-all overflow-hidden
+        ${isOpen ? 'left-0 bottom-0 w-full h-[70vh] rounded-t-3xl border-t' : 'hidden md:flex'}
+        bg-stone-800/95 backdrop-blur border-stone-700 md:rounded-xl md:border p-4 pb-12 md:pb-4 flex-col pointer-events-auto shadow-2xl z-40 transition-all overflow-hidden
       `}>
-        <div className="flex justify-between items-center mb-4 border-b border-stone-700 pb-2">
+        <div className="flex justify-between items-center mb-4 border-b border-stone-700 pb-2 shrink-0">
           <h2 className="text-xl font-bold text-stone-100">{t('catalogueTitle')}</h2>
           <button onClick={() => setIsOpen(false)} className="md:hidden p-2 text-stone-400 hover:text-white">
              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
           </button>
         </div>
       
-      <div className="mb-4">
+      <div className="mb-4 shrink-0">
         <button
           onClick={() => setSelectedBlockType(null)}
           className={`w-full text-left px-4 py-3 rounded-lg border flex items-center gap-3 transition-all ${
@@ -102,7 +102,7 @@ export function CataloguePanel() {
         </button>
       </div>
 
-      <div className="flex-1 overflow-y-auto space-y-2 pr-2 pb-16 custom-scrollbar">
+      <div className="flex-1 min-h-0 overflow-y-auto space-y-2 pr-2 pb-8 custom-scrollbar">
         {PROFILES.map((profile) => {
           const isUnlocked = unlockedProfiles.includes(profile.type);
           const isSelected = selectedBlockType === profile.type;
@@ -134,7 +134,7 @@ export function CataloguePanel() {
           );
         })}
       </div>
-      <div className="mt-4 pt-4 border-t border-stone-700 pb-2">
+      <div className="mt-4 pt-4 border-t border-stone-700 pb-2 shrink-0">
         <button
           onClick={clearBlocks}
           className="w-full bg-red-900/50 hover:bg-red-800 text-red-200 py-2 rounded-lg transition"
