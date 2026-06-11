@@ -115,18 +115,9 @@ export const usePiStore = create<PiState>((set, get) => ({
         throw new Error(data.message || "SSO Gagal");
       }
     } catch (err: any) {
-      console.error(err);
-      set({ error: err.message, isAuthenticating: false });
-      
-      // FALLBACK SEMENTARA: Jika API belum 100% jadi, berikan fallback agar game tetap bisa dites
-      console.warn("API Gagal, menggunakan fallback sementara...");
-      set({
-        user: { uid: 'bmc_fallback', username: 'Admin' }, // Menggunakan 'Admin' sesuai permintaan
-        isAuthenticated: true,
-        isAuthenticating: false,
-        authMethod: 'bamboochain',
-        bmcBalance: 2222.52 // Angka dari screenshot Anda
-      });
+      console.error("SSO Error details:", err);
+      set({ error: err.message, isAuthenticating: false, isAuthenticated: false, user: null });
+      alert("Gagal Login SSO BaMbooChain: " + err.message + "\n\nPastikan API di website yayasan sudah aktif dan CORS-nya mengizinkan domain game ini.");
     }
   },
   stakeBalance: (amount) => {
