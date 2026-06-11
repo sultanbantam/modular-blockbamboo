@@ -138,11 +138,11 @@ export function TopControls() {
 
           {/* Camera Group */}
           <div className="flex gap-1 border-r border-stone-700 pr-2">
-            {['Atas', 'Depan', 'Blkng', 'Kiri', 'Kanan'].map((view) => (
+            {(['atas', 'depan', 'blkng', 'kiri', 'kanan'] as const).map((view) => (
               <button 
                 key={view}
-                onClick={() => setCameraView(view.toLowerCase())}
-                className="px-2 py-1 text-xs rounded transition-colors text-stone-300 hover:bg-stone-800 hover:text-white font-mono"
+                onClick={() => setCameraView(view)}
+                className="px-2 py-1 text-xs rounded transition-colors text-stone-300 hover:bg-stone-800 hover:text-white font-mono capitalize"
               >
                 {view}
               </button>

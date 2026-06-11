@@ -96,7 +96,7 @@ interface GameState {
   undo: () => void;
   redo: () => void;
   setShowHelpers: (show: boolean) => void;
-  setCameraView: (view: string | null) => void;
+  setCameraView: (view: 'atas' | 'depan' | 'blkng' | 'kiri' | 'kanan' | null) => void;
 
   addBlock: (block: Omit<BlockData, 'id'>) => void;
   removeBlock: (id: string) => void;
