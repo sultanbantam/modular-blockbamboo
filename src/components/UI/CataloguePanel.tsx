@@ -74,9 +74,9 @@ export function CataloguePanel() {
       </button>
 
       <div className={`
-        absolute md:left-4 md:top-24 md:w-80 md:max-h-[calc(100vh-7rem)]
-        ${isOpen ? 'left-0 bottom-0 w-full h-[70vh] rounded-t-3xl border-t' : 'hidden md:flex'}
-        bg-stone-800/95 backdrop-blur border-stone-700 md:rounded-xl md:border p-4 pb-12 md:pb-4 flex-col pointer-events-auto shadow-2xl z-40 transition-all overflow-hidden
+        fixed md:absolute md:left-4 md:top-24 md:w-80 md:max-h-[calc(100vh-7rem)]
+        ${isOpen ? 'inset-x-0 bottom-0 h-[65dvh] rounded-t-3xl border-t' : 'hidden md:flex'}
+        bg-stone-800/95 backdrop-blur border-stone-700 md:rounded-xl md:border p-4 pb-16 md:pb-4 flex-col pointer-events-auto shadow-2xl z-40 transition-all overflow-hidden
       `}>
         <div className="flex justify-between items-center mb-4 border-b border-stone-700 pb-2 shrink-0">
           <h2 className="text-xl font-bold text-stone-100">{t('catalogueTitle')}</h2>

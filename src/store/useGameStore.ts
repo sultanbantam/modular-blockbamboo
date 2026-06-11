@@ -48,6 +48,8 @@ interface GameState {
   transformMode: 'translate' | 'rotate'; // Gizmo mode
   isPanMode: boolean;
   showHelpers: boolean;
+  showGrid: boolean;
+  gridSize: number;
   cameraView: 'atas' | 'depan' | 'blkng' | 'kiri' | 'kanan' | 'reset' | null;
   pastBlocks: BlockData[][];
   futureBlocks: BlockData[][];
@@ -97,6 +99,8 @@ interface GameState {
   redo: () => void;
   setShowHelpers: (show: boolean) => void;
   setCameraView: (view: 'atas' | 'depan' | 'blkng' | 'kiri' | 'kanan' | 'reset' | null) => void;
+  setShowGrid: (show: boolean) => void;
+  setGridSize: (size: number) => void;
 
   addBlock: (block: Omit<BlockData, 'id'>) => void;
   removeBlock: (id: string) => void;
@@ -132,6 +136,8 @@ export const useGameStore = create<GameState>()(
       isPanMode: false,
       showHelpers: true,
       cameraView: null,
+      showGrid: true,
+      gridSize: 30, // Default 30cm
       pastBlocks: [],
       futureBlocks: [],
       hoverPos: null,
@@ -256,6 +262,8 @@ export const useGameStore = create<GameState>()(
 
   setShowHelpers: (show) => set({ showHelpers: show }),
   setCameraView: (view) => set({ cameraView: view }),
+  setShowGrid: (show) => set({ showGrid: show }),
+  setGridSize: (size) => set({ gridSize: size }),
 
   addBlock: (block) => set((state) => {
     let isInterlocking = false;

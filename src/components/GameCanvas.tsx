@@ -22,7 +22,7 @@ const GRID_SIZE = 200; // 200 * 0.09m = 18m grid
 let sharedClosestPair: { active: THREE.Mesh, static: THREE.Mesh, distance: number, delta: THREE.Vector3 } | null = null;
 
 function Scene() {
-  const { blocks, selectedBlockType, rotationIndex, customRotation, flipAxis, draggingId, editingId, transformMode, hoverPos, cameraView, setCameraView, saveHistory, addBlock, updateBlockPosition, updateBlockRotation, setDraggingId, setEditingId, setHoverPos, setContextMenu, isPanMode, triggerSnapCount, onlineUsers, roomId } = useGameStore();
+  const { blocks, selectedBlockType, rotationIndex, customRotation, flipAxis, draggingId, editingId, transformMode, hoverPos, cameraView, setCameraView, showGrid, gridSize, saveHistory, addBlock, updateBlockPosition, updateBlockRotation, setDraggingId, setEditingId, setHoverPos, setContextMenu, isPanMode, triggerSnapCount, onlineUsers, roomId } = useGameStore();
 
   const [activeGroup, setActiveGroup] = useState<THREE.Group | null>(null);
   const orbitRef = useRef<any>(null);
@@ -257,16 +257,18 @@ function Scene() {
         <meshBasicMaterial visible={false} />
       </mesh>
 
-      <Grid
-        args={[GRID_SIZE * GRID_VISUAL, GRID_SIZE * GRID_VISUAL]}
-        cellSize={GRID_VISUAL}
-        cellThickness={1}
-        cellColor="#6f6f6f"
-        sectionSize={GRID_VISUAL * 5}
-        sectionThickness={1.5}
-        sectionColor="#9d4b4b"
-        fadeDistance={50}
-      />
+      {showGrid && (
+        <Grid
+          args={[GRID_SIZE * (gridSize / 100), GRID_SIZE * (gridSize / 100)]}
+          cellSize={gridSize / 100}
+          cellThickness={1}
+          cellColor="#6f6f6f"
+          sectionSize={(gridSize / 100) * 5}
+          sectionThickness={1.5}
+          sectionColor="#9d4b4b"
+          fadeDistance={50}
+        />
+      )}
 
       {/* Render Remote Cursors */}
       {roomId && onlineUsers.map((user, idx) => {
