@@ -93,7 +93,6 @@ export const usePiStore = create<PiState>((set) => ({
     set({ isAuthenticating: true, error: null });
     try {
       if (typeof window !== 'undefined' && window.Pi) {
-        window.Pi.init({ version: "2.0", sandbox: true });
         const scopes = ['username', 'payments'];
         const onIncompletePaymentFound = (payment: any) => {
           console.log("Incomplete payment found", payment);

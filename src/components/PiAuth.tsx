@@ -1,9 +1,27 @@
 "use client";
 
+import { useEffect } from "react";
 import { usePiStore } from "@/store/usePiStore";
 
 export default function PiAuth() {
   const { login, skipLogin, isAuthenticating, error } = usePiStore();
+
+  useEffect(() => {
+    const initPi = () => {
+      if (typeof window !== 'undefined' && window.Pi) {
+        try {
+          window.Pi.init({ version: "2.0", sandbox: true });
+          console.log("Pi SDK initialized");
+        } catch (e) {
+          console.warn("Pi init failed or already initialized", e);
+        }
+      } else {
+        // If script hasn't loaded yet, try again shortly
+        setTimeout(initPi, 500);
+      }
+    };
+    initPi();
+  }, []);
 
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-stone-900 text-stone-200">
