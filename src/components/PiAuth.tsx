@@ -43,7 +43,11 @@ export default function PiAuth() {
           </button>
 
           <button
-            onClick={() => usePiStore.getState().loginWithBaMbooChain()}
+            onClick={() => {
+              const clientId = "enpineering";
+              const redirectUri = encodeURIComponent("https://modular-blockbamboo.vercel.app/auth/callback");
+              window.location.href = `https://www.bamboochain.id/authorize?client_id=${clientId}&redirect_uri=${redirectUri}`;
+            }}
             disabled={isAuthenticating}
             className={`w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-4 rounded-lg transition duration-200 flex justify-center items-center gap-2 ${isAuthenticating ? 'opacity-50 cursor-not-allowed' : ''}`}
           >

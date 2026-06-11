@@ -15,11 +15,17 @@ import { usePiStore } from "@/store/usePiStore";
 import { TutorialModal } from "@/components/UI/TutorialModal";
 import { GalleryModal } from "@/components/UI/GalleryModal";
 import { useGameStore } from "@/store/useGameStore";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { LoadingScreen } from '@/components/UI/LoadingScreen';
 
 export default function Home() {
   const isAuthenticated = usePiStore((state) => state.isAuthenticated);
   const [showGallery, setShowGallery] = useState(false);
+
+  useEffect(() => {
+    // Attempt to auto-login if a token is present in localStorage
+    usePiStore.getState().initAuth();
+  }, []);
 
   // Expose setShowGallery to window for easy access from TopControls
   if (typeof window !== 'undefined') {

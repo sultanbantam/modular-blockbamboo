@@ -15,7 +15,9 @@ interface PiState {
   stakedBalance: number;
   login: () => Promise<void>;
   skipLogin: () => void;
-  loginWithBaMbooChain: () => void;
+  loginWithBaMbooChain: (code: string) => Promise<void>;
+  initAuth: () => Promise<void>;
+  logout: () => void;
   purchaseProfile: (profileId: string, amount: number, onSuccess: () => void, onError: (err: any) => void) => void;
   stakeBalance: (amount: number) => void;
 }
@@ -43,22 +45,58 @@ export const usePiStore = create<PiState>((set, get) => ({
       authMethod: 'pi'
     });
   },
-  loginWithBaMbooChain: async () => {
+  initAuth: async () => {
+    // Check localStorage for existing token
+    const token = localStorage.getItem('bmc_access_token');
+    if (!token) return;
+
+    set({ isAuthenticating: true, authMethod: 'bamboochain' });
+    try {
+      const balanceRes = await fetch('https://www.bamboochain.id/api/wallet/balance', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const balanceData = await balanceRes.json();
+      
+      if (balanceData.success) {
+        set({
+          user: { uid: balanceData.userId || 'bmc_user', username: balanceData.userName || 'Admin' },
+          isAuthenticated: true,
+          isAuthenticating: false,
+          bmcBalance: balanceData.balance
+        });
+      } else {
+        throw new Error("Token expired");
+      }
+    } catch (e) {
+      console.error("Session expired or invalid");
+      localStorage.removeItem('bmc_access_token');
+      set({ isAuthenticating: false, authMethod: null, isAuthenticated: false, user: null });
+    }
+  },
+  logout: () => {
+    localStorage.removeItem('bmc_access_token');
+    set({ user: null, isAuthenticated: false, authMethod: null, bmcBalance: 0, stakedBalance: 0 });
+    window.location.reload();
+  },
+  loginWithBaMbooChain: async (code: string) => {
     set({ isAuthenticating: true, error: null, authMethod: 'bamboochain' });
     try {
       // Panggil API asli yang baru saja Anda deploy di Vercel!
-      // Menggunakan mock data untuk auth_code karena ini simulasi SSO sederhana
+      // Menggunakan auth_code dari parameter URL
       const res = await fetch('https://www.bamboochain.id/api/oauth/token', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ auth_code: "dummy_code_from_frontend" })
+        body: JSON.stringify({ auth_code: code })
       });
       
-      if (!res.ok) throw new Error("Gagal terhubung ke BaMbooChain API");
+      if (!res.ok) throw new Error("Gagal menukarkan kode otorisasi");
       
       const data = await res.json();
       
       if (data.success) {
+        // Simpan token ke localStorage!
+        localStorage.setItem('bmc_access_token', data.access_token);
+
         // Jika login berhasil, tarik juga saldo terbaru dari database!
         const balanceRes = await fetch('https://www.bamboochain.id/api/wallet/balance', {
           headers: { 'Authorization': `Bearer ${data.access_token}` }
@@ -124,11 +162,12 @@ export const usePiStore = create<PiState>((set, get) => ({
       
       try {
         // Panggil API Potong Saldo yang baru saja Anda buat!
+        const token = localStorage.getItem('bmc_access_token') || `fake_token_for_now_${user?.uid}`;
         const res = await fetch('https://www.bamboochain.id/api/wallet/pay', {
           method: 'POST',
           headers: { 
             'Content-Type': 'application/json',
-            'Authorization': `Bearer fake_token_for_now_${user?.uid}` 
+            'Authorization': `Bearer ${token}` 
           },
           body: JSON.stringify({ amount, memo: `Pembelian/Donasi in-game: ${profileId}` })
         });
