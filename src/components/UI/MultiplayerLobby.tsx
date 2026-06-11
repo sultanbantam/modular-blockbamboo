@@ -122,7 +122,7 @@ export function MultiplayerLobby({ onClose }: { onClose: () => void }) {
                   className="w-full py-2 bg-amber-600/20 hover:bg-amber-600/40 text-amber-500 border border-amber-600/50 rounded-lg text-sm font-bold transition flex justify-center items-center gap-2"
                 >
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
-                  Donasi Pi ke Kas
+                  Donasi {usePiStore.getState().authMethod === 'bamboochain' ? 'BMC' : 'Pi'} ke Kas
                 </button>
               </div>
 
