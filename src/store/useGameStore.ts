@@ -119,7 +119,7 @@ interface GameState {
 
 export const useGameStore = create<GameState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       blocks: [],
       selectedBlockType: null,
       rotationIndex: 0,
