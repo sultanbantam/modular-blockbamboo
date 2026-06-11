@@ -10,8 +10,11 @@ interface PiState {
   isAuthenticated: boolean;
   isAuthenticating: boolean;
   error: string | null;
+  authMethod: 'pi' | 'bamboochain' | null;
+  bmcBalance: number;
   login: () => Promise<void>;
   skipLogin: () => void;
+  loginWithBaMbooChain: () => void;
   purchaseProfile: (profileId: string, amount: number, onSuccess: () => void, onError: (err: any) => void) => void;
 }
 
@@ -21,20 +24,53 @@ declare global {
   }
 }
 
-export const usePiStore = create<PiState>((set) => ({
+export const usePiStore = create<PiState>((set, get) => ({
   user: null,
   isAuthenticated: false,
   isAuthenticating: false,
   error: null,
+  authMethod: null,
+  bmcBalance: 0,
   skipLogin: () => {
     set({
       user: { uid: 'test_uid_123', username: 'TestBuilder' },
       isAuthenticated: true,
       isAuthenticating: false,
-      error: null
+      error: null,
+      authMethod: 'pi'
     });
   },
+  loginWithBaMbooChain: () => {
+    set({ isAuthenticating: true, error: null });
+    // Simulate SSO Redirect & Token Callback
+    setTimeout(() => {
+      set({
+        user: { uid: 'bmc_user_999', username: 'BambooBuilder' },
+        isAuthenticated: true,
+        isAuthenticating: false,
+        authMethod: 'bamboochain',
+        bmcBalance: 100 // Give 100 BMC for testing
+      });
+    }, 1500);
+  },
   purchaseProfile: (profileId, amount, onSuccess, onError) => {
+    const { authMethod, bmcBalance } = get();
+
+    if (authMethod === 'bamboochain') {
+      console.log(`[BaMbooChain] Processing payment for ${profileId} - Amount: ${amount} BMC`);
+      if (bmcBalance < amount) {
+        onError(new Error("Insufficient BMC Balance"));
+        return;
+      }
+      // Simulate network request
+      setTimeout(() => {
+        set({ bmcBalance: bmcBalance - amount });
+        console.log(`[BaMbooChain] Payment successful. Remaining BMC: ${bmcBalance - amount}`);
+        onSuccess();
+      }, 1000);
+      return;
+    }
+
     // Mock purchase if not in Pi Browser
     if (typeof window === 'undefined' || !window.Pi) {
       console.log(`[Mock Purchase] Profile ${profileId} purchased for ${amount} Pi`);
@@ -116,7 +152,8 @@ export const usePiStore = create<PiState>((set) => ({
         set({
           user: { uid: auth.user.uid, username: auth.user.username },
           isAuthenticated: true,
-          isAuthenticating: false
+          isAuthenticating: false,
+          authMethod: 'pi'
         });
       } else {
         set({ error: "Pi SDK not loaded (Are you running in Pi Browser?)", isAuthenticating: false });

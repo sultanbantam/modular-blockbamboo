@@ -123,9 +123,9 @@ export function CataloguePanel() {
                 {purchasing === profile.type && <span className="text-xs text-amber-500 animate-pulse">({t('buying')})</span>}
               </div>
               {!isUnlocked && (
-                <div className="flex items-center gap-1 text-amber-600 bg-amber-900/20 px-2 py-1 rounded text-xs">
+                <div className={`flex items-center gap-1 ${usePiStore.getState().authMethod === 'bamboochain' ? 'text-green-500 bg-green-900/20' : 'text-amber-600 bg-amber-900/20'} px-2 py-1 rounded text-xs`}>
                   <span>🔒</span>
-                  <span className="font-bold">{profile.price} π</span>
+                  <span className="font-bold">{profile.price} {usePiStore.getState().authMethod === 'bamboochain' ? 'BMC' : 'π'}</span>
                 </div>
               )}
             </button>

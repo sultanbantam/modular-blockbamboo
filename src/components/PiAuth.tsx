@@ -29,17 +29,28 @@ export default function PiAuth() {
         <h1 className="text-3xl font-bold mb-2 text-green-500 tracking-tight">BlockBamboo</h1>
         <p className="text-stone-400 mb-8">Eco-friendly Modular Construction</p>
         
-        <button
-          onClick={() => login()}
-          disabled={isAuthenticating}
-          className="w-full bg-[#fbbc05] hover:bg-[#f2a900] text-black font-bold py-3 px-4 rounded-lg transition duration-200 mb-4 flex justify-center items-center"
-        >
-          {isAuthenticating ? (
-            <span className="animate-pulse">Connecting to Pi Network...</span>
-          ) : (
-            <span>Login with Pi</span>
-          )}
-        </button>
+        <div className="space-y-4 mb-4">
+          <button
+            onClick={() => login()}
+            disabled={isAuthenticating}
+            className="w-full bg-[#fbbc05] hover:bg-[#f2a900] text-black font-bold py-3 px-4 rounded-lg transition duration-200 flex justify-center items-center"
+          >
+            {isAuthenticating ? (
+              <span className="animate-pulse">Connecting to Pi Network...</span>
+            ) : (
+              <span>Login with Pi</span>
+            )}
+          </button>
+
+          <button
+            onClick={() => usePiStore.getState().loginWithBaMbooChain()}
+            disabled={isAuthenticating}
+            className="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-4 rounded-lg transition duration-200 flex justify-center items-center gap-2"
+          >
+            <span className="text-xl">🌿</span>
+            <span>Login with BaMbooChain</span>
+          </button>
+        </div>
 
         <button
           onClick={() => skipLogin()}

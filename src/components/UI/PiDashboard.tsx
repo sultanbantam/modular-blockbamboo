@@ -1,107 +1,111 @@
-import { useGameStore } from '@/store/useGameStore';
 import { usePiStore } from '@/store/usePiStore';
+import { useGameStore } from '@/store/useGameStore';
 import { useState } from 'react';
 
 export function PiDashboard({ onClose }: { onClose: () => void }) {
-  const { piBalance } = useGameStore();
-  const { user, isAuthenticated, login } = usePiStore();
-  const [activeTab, setActiveTab] = useState<'dompet' | 'staking'>('dompet');
+  const [activeTab, setActiveTab] = useState<'wallet' | 'staking'>('wallet');
+  const { user, bmcBalance, authMethod } = usePiStore();
+  const { prizePoolBalance } = useGameStore();
+  
+  // Fake balance for Pi demo
+  const piBalance = 12.5;
+
+  const currencySymbol = authMethod === 'bamboochain' ? 'BMC' : 'π';
+  const displayBalance = authMethod === 'bamboochain' ? bmcBalance : piBalance;
+  const currencyColor = authMethod === 'bamboochain' ? 'text-green-500' : 'text-purple-500';
+  const currencyColorSoft = authMethod === 'bamboochain' ? 'text-green-400' : 'text-purple-400';
+  const currencyBg = authMethod === 'bamboochain' ? 'bg-green-500' : 'bg-purple-500';
+  const dashboardTitle = authMethod === 'bamboochain' ? 'BaMbooChain Dashboard' : 'Pi Dashboard';
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-      <div className="bg-stone-900 border border-stone-700 rounded-2xl shadow-2xl w-full max-w-md overflow-hidden flex flex-col">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center pointer-events-auto">
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
+      
+      <div className="bg-stone-900 border border-stone-700 rounded-2xl w-full max-w-md mx-4 overflow-hidden shadow-2xl relative z-10 flex flex-col max-h-[80vh]">
         {/* Header */}
-        <div className="p-4 border-b border-stone-800 flex justify-between items-center bg-stone-950">
-          <h2 className="text-xl font-bold text-stone-100 flex items-center gap-2">
-            <span className="text-purple-500">π</span> Pi Dashboard
+        <div className="p-4 border-b border-stone-800 flex justify-between items-center bg-stone-900">
+          <h2 className="text-xl font-bold text-white flex items-center gap-2">
+            <span className={currencyColor}>{authMethod === 'bamboochain' ? '🌿' : 'π'}</span> {dashboardTitle}
           </h2>
-          <button onClick={onClose} className="text-stone-500 hover:text-white transition">
+          <button onClick={onClose} className="text-stone-400 hover:text-white p-1">
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
           </button>
         </div>
 
-        {/* Auth State */}
-        {!isAuthenticated ? (
-          <div className="p-8 text-center flex flex-col items-center">
-            <div className="w-16 h-16 bg-purple-900/30 rounded-full flex items-center justify-center mb-4">
-              <span className="text-3xl text-purple-400">π</span>
-            </div>
-            <h3 className="text-lg font-bold text-stone-200 mb-2">Belum Terhubung</h3>
-            <p className="text-stone-400 text-sm mb-6">Hubungkan akun Pi Network Anda untuk menyimpan progres, membeli blueprint, dan mendapatkan reward.</p>
-            <button onClick={login} className="bg-purple-600 hover:bg-purple-500 text-white font-bold py-3 px-8 rounded-xl transition shadow-lg shadow-purple-900/50">
-              Login dengan Pi
-            </button>
+        {/* User Info */}
+        <div className="bg-stone-800/50 p-4 border-b border-stone-800 flex items-center gap-3">
+          <div className={`w-12 h-12 rounded-full ${currencyBg} flex items-center justify-center text-white font-bold text-xl`}>
+            {user?.username?.charAt(0).toUpperCase() || 'U'}
           </div>
-        ) : (
-          <>
-            {/* Tabs */}
-            <div className="flex border-b border-stone-800 bg-stone-950">
-              <button 
-                onClick={() => setActiveTab('dompet')}
-                className={`flex-1 py-3 text-sm font-bold transition-colors ${activeTab === 'dompet' ? 'text-purple-400 border-b-2 border-purple-500 bg-stone-900' : 'text-stone-500 hover:text-stone-300'}`}
-              >
-                Dompet In-Game
-              </button>
-              <button 
-                onClick={() => setActiveTab('staking')}
-                className={`flex-1 py-3 text-sm font-bold transition-colors ${activeTab === 'staking' ? 'text-purple-400 border-b-2 border-purple-500 bg-stone-900' : 'text-stone-500 hover:text-stone-300'}`}
-              >
-                Staking / Reward
-              </button>
-            </div>
+          <div>
+            <div className="text-stone-200 font-bold">{user?.username || 'Pioneer'}</div>
+            <div className="text-xs text-stone-500 font-mono">{user?.uid?.substring(0, 12)}...</div>
+          </div>
+        </div>
 
-            {/* Content */}
-            <div className="p-6">
-              {activeTab === 'dompet' && (
-                <div className="space-y-6">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-stone-800 rounded-full flex items-center justify-center text-stone-300 font-bold">
-                      {user?.username?.charAt(0).toUpperCase()}
-                    </div>
-                    <div>
-                      <div className="text-sm text-stone-400">Pemain</div>
-                      <div className="font-bold text-stone-200">@{user?.username}</div>
-                    </div>
-                  </div>
+        {/* Tabs */}
+        <div className="flex border-b border-stone-800">
+          <button 
+            onClick={() => setActiveTab('wallet')}
+            className={`flex-1 py-3 text-sm font-bold transition-colors ${activeTab === 'wallet' ? `text-${currencyColor.split('-')[1]}-400 border-b-2 border-${currencyColor.split('-')[1]}-500` : 'text-stone-500 hover:text-stone-300'}`}
+          >
+            Dompet In-Game
+          </button>
+          <button 
+            onClick={() => setActiveTab('staking')}
+            className={`flex-1 py-3 text-sm font-bold transition-colors ${activeTab === 'staking' ? `text-${currencyColor.split('-')[1]}-400 border-b-2 border-${currencyColor.split('-')[1]}-500` : 'text-stone-500 hover:text-stone-300'}`}
+          >
+            Staking / Reward
+          </button>
+        </div>
 
-                  <div className="bg-gradient-to-br from-purple-900/40 to-stone-900 border border-purple-800/30 rounded-xl p-6 text-center shadow-inner relative overflow-hidden">
-                    <div className="absolute -top-4 -right-4 text-7xl text-purple-500/10 rotate-12">π</div>
-                    <div className="text-sm text-purple-300/80 mb-1">Saldo Reward In-Game</div>
-                    <div className="text-4xl font-bold text-white flex items-center justify-center gap-2">
-                      {piBalance.toFixed(2)} <span className="text-2xl text-purple-400">π</span>
-                    </div>
-                  </div>
-
-                  <p className="text-xs text-stone-500 text-center">
-                    Saldo ini didapatkan dari menyelesaikan tantangan merakit dengan cepat. Dapat digunakan untuk membeli blueprint premium atau di-stake!
-                  </p>
-                </div>
-              )}
-
-              {activeTab === 'staking' && (
-                <div className="space-y-4">
-                  <div className="bg-stone-800/50 border border-stone-700 rounded-xl p-4">
-                    <h3 className="font-bold text-stone-200 mb-2">Kunci Saldo (Staking)</h3>
-                    <p className="text-xs text-stone-400 mb-4">
-                      Kunci saldo in-game Anda selama 3D, 7D, 1M untuk mendapatkan bonus dan reward menarik!
-                    </p>
-                    <div className="flex gap-2">
-                      <input type="number" placeholder="Jumlah π" className="w-full bg-stone-900 border border-stone-700 rounded px-3 py-2 text-stone-200 focus:outline-none focus:border-purple-500" />
-                      <button className="bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded font-bold transition whitespace-nowrap">
-                        Stake
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="bg-stone-800/50 border border-stone-700 rounded-xl p-4 text-center">
-                    <div className="text-sm text-stone-400 mb-1">Total Sedang Di-stake</div>
-                    <div className="text-xl font-bold text-stone-300">0.00 π</div>
+        {/* Content */}
+        <div className="p-6 overflow-y-auto custom-scrollbar flex-1">
+          {activeTab === 'wallet' && (
+            <div className="space-y-6">
+              <div className="bg-stone-800 rounded-xl p-6 border border-stone-700 relative overflow-hidden">
+                <div className={`absolute -top-4 -right-4 text-7xl ${currencyColor.replace('500', '500/10')} rotate-12`}>{currencySymbol}</div>
+                <div className="relative z-10">
+                  <div className="text-stone-400 text-sm mb-1">Saldo Tersedia</div>
+                  <div className="text-4xl font-bold text-white flex items-baseline gap-2">
+                    {displayBalance.toFixed(2)} <span className={`text-2xl ${currencyColorSoft}`}>{currencySymbol}</span>
                   </div>
                 </div>
-              )}
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <button className="bg-stone-800 hover:bg-stone-700 text-stone-200 py-3 rounded-xl font-bold transition-colors border border-stone-700 flex flex-col items-center gap-1">
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 11l5-5m0 0l5 5m-5-5v12" /></svg>
+                  <span className="text-sm">Deposit</span>
+                </button>
+                <button className="bg-stone-800 hover:bg-stone-700 text-stone-200 py-3 rounded-xl font-bold transition-colors border border-stone-700 flex flex-col items-center gap-1">
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 13l-5 5m0 0l-5-5m5 5V6" /></svg>
+                  <span className="text-sm">Withdraw</span>
+                </button>
+              </div>
             </div>
-          </>
-        )}
+          )}
+
+          {activeTab === 'staking' && (
+            <div className="space-y-4">
+              <div className="bg-stone-800/50 border border-stone-700 rounded-xl p-4">
+                <h3 className="font-bold text-stone-200 mb-2">Kunci Saldo (Staking)</h3>
+                <p className="text-xs text-stone-400 mb-4">
+                  Kunci saldo in-game Anda selama 3D, 7D, 1M untuk mendapatkan bonus dan reward menarik!
+                </p>
+                <div className="flex gap-2">
+                  <input type="number" placeholder={`Jumlah ${currencySymbol}`} className={`w-full bg-stone-900 border border-stone-700 rounded px-3 py-2 text-stone-200 focus:outline-none focus:border-${currencyColor.split('-')[1]}-500`} />
+                  <button className={`${currencyBg} hover:opacity-90 text-white font-bold px-4 rounded transition-colors`}>Stake</button>
+                </div>
+              </div>
+
+              <div className="bg-stone-800/50 border border-stone-700 rounded-xl p-4 flex justify-between items-center">
+                <span className="text-stone-300 text-sm">Total Sedang Di-stake</span>
+                <div className="text-xl font-bold text-stone-300">0.00 {currencySymbol}</div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

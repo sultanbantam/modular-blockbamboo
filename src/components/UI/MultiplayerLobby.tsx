@@ -98,7 +98,7 @@ export function MultiplayerLobby({ onClose }: { onClose: () => void }) {
                   <p className="text-sm text-stone-300 font-bold flex items-center gap-2">
                     <span>🎁</span> Kas Proyek (Prize Pool)
                   </p>
-                  <span className="text-amber-400 font-bold">{useGameStore.getState().prizePoolBalance} π</span>
+                  <span className="text-amber-400 font-bold">{useGameStore.getState().prizePoolBalance} {usePiStore.getState().authMethod === 'bamboochain' ? 'BMC' : 'π'}</span>
                 </div>
                 <button
                   onClick={() => {
@@ -107,7 +107,8 @@ export function MultiplayerLobby({ onClose }: { onClose: () => void }) {
                     usePiStore.getState().purchaseProfile('prizepool_donation', amount, 
                       () => {
                         useGameStore.getState().fundPrizePool(amount);
-                        alert(`Terima kasih! Anda berhasil menyumbang ${amount} Pi ke Kas Proyek.`);
+                        const currency = usePiStore.getState().authMethod === 'bamboochain' ? 'BMC' : 'Pi';
+                        alert(`Terima kasih! Anda berhasil menyumbang ${amount} ${currency} ke Kas Proyek.`);
                         setIsConnecting(false);
                       },
                       (err) => {
