@@ -55,8 +55,12 @@ export const usePiStore = create<PiState>((set) => ({
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ paymentId }),
             });
-            if (!res.ok) throw new Error("Approval failed");
-          } catch (e) {
+            if (!res.ok) {
+              const data = await res.json().catch(() => ({}));
+              alert("Backend Error: " + (data.error || "Approval failed"));
+              throw new Error(data.error || "Approval failed");
+            }
+          } catch (e: any) {
             console.error(e);
             throw e;
           }
@@ -68,9 +72,13 @@ export const usePiStore = create<PiState>((set) => ({
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ paymentId, txid }),
             });
-            if (!res.ok) throw new Error("Completion failed");
+            if (!res.ok) {
+              const data = await res.json().catch(() => ({}));
+              alert("Backend Error (Completion): " + (data.error || "Completion failed"));
+              throw new Error(data.error || "Completion failed");
+            }
             onSuccess();
-          } catch (e) {
+          } catch (e: any) {
             console.error(e);
             throw e;
           }
