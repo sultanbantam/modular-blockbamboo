@@ -83,9 +83,9 @@ export function TutorialModal() {
     <div className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
       <div className="bg-stone-900 border border-stone-700 w-full max-w-lg max-h-[90vh] rounded-2xl shadow-2xl p-4 md:p-6 relative flex flex-col">
         <div className="flex justify-between items-start mb-4 shrink-0">
-          <h2 className="text-xl md:text-2xl font-bold text-green-500 flex items-center gap-2 md:gap-3">
-            <span className="text-2xl md:text-3xl">{slides[step].icon}</span>
-            {slides[step].title}
+          <h2 className="text-xl md:text-2xl font-bold text-green-500 leading-snug">
+            {slides[step].icon && <span className="inline-block mr-2 text-2xl md:text-3xl align-middle">{slides[step].icon}</span>}
+            <span className="align-middle">{slides[step].title}</span>
           </h2>
           <button 
             onClick={closeTutorial}
