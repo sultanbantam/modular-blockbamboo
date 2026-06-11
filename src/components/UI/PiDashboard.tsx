@@ -83,7 +83,7 @@ export function PiDashboard({ onClose }: { onClose: () => void }) {
                   <div className="bg-stone-800/50 border border-stone-700 rounded-xl p-4">
                     <h3 className="font-bold text-stone-200 mb-2">Kunci Saldo (Staking)</h3>
                     <p className="text-xs text-stone-400 mb-4">
-                      Kunci saldo in-game Anda selama 7 hari untuk mendapatkan bunga sebesar 5% APY!
+                      Kunci saldo in-game Anda selama 3D, 7D, 1M untuk mendapatkan bonus dan reward menarik!
                     </p>
                     <div className="flex gap-2">
                       <input type="number" placeholder="Jumlah π" className="w-full bg-stone-900 border border-stone-700 rounded px-3 py-2 text-stone-200 focus:outline-none focus:border-purple-500" />
