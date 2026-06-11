@@ -35,6 +35,7 @@ export interface SaveSlot {
   name: string;
   date: string;
   blocks: BlockData[];
+  workTime: number; // in seconds
 }
 
 interface GameState {
@@ -60,6 +61,14 @@ interface GameState {
   level: number;
   xp: number;
   triggerSnapCount: number;
+  
+  // Real Construction Project
+  activeWorkTime: number; // in seconds
+  projectName: string;
+  incrementWorkTime: () => void;
+  setProjectName: (name: string) => void;
+  newProject: () => void;
+  
   savedSlots: SaveSlot[];
   language: 'id' | 'en';
   setLanguage: (lang: 'id' | 'en') => void;
@@ -143,6 +152,10 @@ export const useGameStore = create<GameState>()(
       level: 0,
       xp: 0,
       triggerSnapCount: 0,
+      
+      activeWorkTime: 0,
+      projectName: "Proyek Baru",
+      
       savedSlots: [],
       
       language: 'id',
@@ -185,13 +198,22 @@ export const useGameStore = create<GameState>()(
         yjsManager.addChatMessage(msg);
       },
 
+      incrementWorkTime: () => set((state) => ({ activeWorkTime: state.activeWorkTime + 1 })),
+      setProjectName: (name) => set({ projectName: name }),
+      newProject: () => set({ 
+        blocks: [], pastBlocks: [], futureBlocks: [], 
+        activeWorkTime: 0, projectName: "Proyek Baru",
+        draggingId: null, editingId: null
+      }),
+
       doSnap: () => set((state) => ({ triggerSnapCount: state.triggerSnapCount + 1 })),
       saveSlot: (id, name) => set((state) => {
         const newSlot = {
           id,
           name,
           date: new Date().toLocaleString('id-ID'),
-          blocks: [...state.blocks]
+          blocks: [...state.blocks],
+          workTime: state.activeWorkTime
         };
         const existingIndex = state.savedSlots.findIndex(s => s.id === id);
         let newSlots = [...state.savedSlots];
@@ -200,7 +222,7 @@ export const useGameStore = create<GameState>()(
         } else {
           newSlots.push(newSlot);
         }
-        return { savedSlots: newSlots };
+        return { savedSlots: newSlots, projectName: name };
       }),
       
       loadSlot: (id) => set((state) => {
@@ -211,7 +233,9 @@ export const useGameStore = create<GameState>()(
           pastBlocks: [],
           futureBlocks: [],
           editingId: null,
-          draggingId: null
+          draggingId: null,
+          projectName: slot.name,
+          activeWorkTime: slot.workTime || 0
         };
       }),
       
@@ -395,7 +419,10 @@ export const useGameStore = create<GameState>()(
       partialize: (state) => ({ 
         blocks: state.blocks, 
         unlockedProfiles: state.unlockedProfiles, 
-        piBalance: state.piBalance 
+        piBalance: state.piBalance,
+        savedSlots: state.savedSlots,
+        activeWorkTime: state.activeWorkTime,
+        projectName: state.projectName
       }),
     }
   )

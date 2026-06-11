@@ -2,6 +2,7 @@ import { useGameStore } from '@/store/useGameStore';
 import { useState } from 'react';
 import { PiDashboard } from './PiDashboard';
 import { SaveLoadModal } from './SaveLoadModal';
+import { ProjectManagerModal } from './ProjectManagerModal';
 import { LevelDisplay } from './LevelDisplay';
 import { MultiplayerLobby } from './MultiplayerLobby';
 import { useTranslation } from '@/hooks/useTranslation';
@@ -11,6 +12,7 @@ import { SettingsModal } from './SettingsModal';
 export function TopControls() {
   const [showDashboard, setShowDashboard] = useState(false);
   const [showSaveModal, setShowSaveModal] = useState(false);
+  const [showProjectModal, setShowProjectModal] = useState(false);
   const [showMultiplayerLobby, setShowMultiplayerLobby] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
   
@@ -88,21 +90,31 @@ export function TopControls() {
           </div>
 
           {/* History Group */}
-          <div className="flex gap-1 border-r border-stone-700 pr-2">
+          {/* Project Management Button */}
+          <div className="flex gap-1 border-r border-stone-700 pr-2 mr-2">
+            <button 
+              onClick={() => setShowProjectModal(true)}
+              className="px-3 py-1 bg-stone-800 rounded hover:bg-stone-700 font-bold flex items-center gap-1 text-sm text-stone-200"
+              title="Simpan / Muat Proyek"
+            >
+              <span>💾</span> Proyek
+            </button>
+          </div>
+
+          <div className="flex gap-2 bg-stone-800/80 p-1.5 rounded-lg border border-stone-700/50">
             <button 
               onClick={undo}
-              disabled={pastBlocks.length === 0 || isUndoRedoLocked}
-              className={`p-1.5 rounded transition-colors flex items-center gap-1 ${(pastBlocks.length === 0 || isUndoRedoLocked) ? 'text-stone-600 cursor-not-allowed' : 'text-stone-300 hover:bg-stone-800 hover:text-white'}`}
-              title={isUndoRedoLocked ? t('undoLocked') : t('undo')}
+              disabled={isUndoRedoLocked || pastBlocks.length === 0}
+              className={`p-1.5 rounded transition-colors ${isUndoRedoLocked || pastBlocks.length === 0 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-stone-700 text-stone-200'}`}
+              title={t('undo')}
             >
-              {isUndoRedoLocked && <span className="text-xs">🔒</span>}
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" /></svg>
             </button>
             <button 
               onClick={redo}
-              disabled={futureBlocks.length === 0 || isUndoRedoLocked}
-              className={`p-1.5 rounded transition-colors flex items-center gap-1 ${(futureBlocks.length === 0 || isUndoRedoLocked) ? 'text-stone-600 cursor-not-allowed' : 'text-stone-300 hover:bg-stone-800 hover:text-white'}`}
-              title={isUndoRedoLocked ? t('redoLocked') : t('redo')}
+              disabled={isUndoRedoLocked || futureBlocks.length === 0}
+              className={`p-1.5 rounded transition-colors ${isUndoRedoLocked || futureBlocks.length === 0 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-stone-700 text-stone-200'}`}
+              title={t('redo')}
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 10h-10a8 8 0 00-8 8v2M21 10l-6 6m6-6l-6-6" /></svg>
             </button>
@@ -185,6 +197,7 @@ export function TopControls() {
 
       {showDashboard && <PiDashboard onClose={() => setShowDashboard(false)} />}
       {showSaveModal && <SaveLoadModal onClose={() => setShowSaveModal(false)} />}
+      {showProjectModal && <ProjectManagerModal onClose={() => setShowProjectModal(false)} />}
       {showMultiplayerLobby && <MultiplayerLobby onClose={() => setShowMultiplayerLobby(false)} />}
       {showSettingsModal && <SettingsModal onClose={() => setShowSettingsModal(false)} />}
     </>
