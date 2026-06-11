@@ -102,11 +102,7 @@ export function MultiplayerLobby({ onClose }: { onClose: () => void }) {
                 </div>
                 <button
                   onClick={() => {
-                    const amountStr = prompt('Masukkan jumlah Pi yang ingin didonasikan ke Kas Proyek ini:', '10');
-                    if (!amountStr) return;
-                    const amount = parseFloat(amountStr);
-                    if (isNaN(amount) || amount <= 0) return alert('Jumlah tidak valid');
-                    
+                    const amount = 1; // Fixed amount to bypass prompt issues in Pi Browser
                     setIsConnecting(true);
                     usePiStore.getState().purchaseProfile('prizepool_donation', amount, 
                       () => {
@@ -116,7 +112,7 @@ export function MultiplayerLobby({ onClose }: { onClose: () => void }) {
                       },
                       (err) => {
                         console.error(err);
-                        alert('Gagal melakukan donasi.');
+                        alert('Gagal melakukan donasi: ' + err.message);
                         setIsConnecting(false);
                       }
                     );

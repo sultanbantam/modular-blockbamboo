@@ -42,23 +42,21 @@ export function CataloguePanel() {
     } else {
       // Trigger Purchase
       if (!profile.price) return;
-      if (confirm(t('buyConfirm', { name: profile.name, price: profile.price }))) {
-        setPurchasing(profile.type);
-        purchaseProfile(
-          profile.type,
-          profile.price,
-          () => {
-            unlockProfile(profile.type);
-            setPurchasing(null);
-            alert(t('buySuccess', { name: profile.name }));
-          },
-          (err) => {
-            console.error(err);
-            setPurchasing(null);
-            alert(t('buyFail', { error: err.message }));
-          }
-        );
-      }
+      setPurchasing(profile.type);
+      purchaseProfile(
+        profile.type,
+        profile.price,
+        () => {
+          unlockProfile(profile.type);
+          setPurchasing(null);
+          alert(t('buySuccess', { name: profile.name }));
+        },
+        (err) => {
+          console.error(err);
+          setPurchasing(null);
+          alert(t('buyFail', { error: err.message }));
+        }
+      );
     }
   };
 

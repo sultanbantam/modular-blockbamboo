@@ -49,19 +49,17 @@ export function GalleryModal({ onClose }: { onClose: () => void }) {
 
   const handleUseBlueprint = (bp: any) => {
     if (bp.price > 0) {
-      if (confirm(`Gunakan blueprint ini seharga ${bp.price} Pi? (Pembuat akan menerima royalty)`)) {
-        purchaseProfile(
-          `blueprint_${bp.id}`, 
-          bp.price, 
-          () => {
-            alert('Blueprint berhasil diimpor!');
-            onClose();
-          },
-          (err) => {
-            alert('Gagal membayar: ' + err.message);
-          }
-        );
-      }
+      purchaseProfile(
+        `blueprint_${bp.id}`, 
+        bp.price, 
+        () => {
+          alert('Blueprint berhasil diimpor!');
+          onClose();
+        },
+        (err) => {
+          alert('Gagal membayar: ' + err.message);
+        }
+      );
     } else {
       alert('Blueprint berhasil dipilih (Gratis)!');
       onClose();
