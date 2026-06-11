@@ -30,7 +30,6 @@ class YjsManager {
 
     // Listen to chat changes
     this.yChatMessages.observe((event, transaction) => {
-      if (transaction.local) return;
       this.isApplyingChatRemote = true;
       const chatArray = this.yChatMessages.toArray().map(yMap => {
         const obj: any = {};

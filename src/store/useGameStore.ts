@@ -172,8 +172,9 @@ export const useGameStore = create<GameState>()(
         };
       }),
       clearUnreadChat: () => set({ unreadChatCount: 0 }),
-      sendChatMessage: (text, senderName, senderColor) => set((state) => {
-        if (!state.roomId || !text.trim()) return state;
+      sendChatMessage: (text, senderName, senderColor) => {
+        const state = get();
+        if (!state.roomId || !text.trim()) return;
         const msg = {
           id: Math.random().toString(36).substr(2, 9),
           sender: senderName,
@@ -182,8 +183,7 @@ export const useGameStore = create<GameState>()(
           timestamp: Date.now()
         };
         yjsManager.addChatMessage(msg);
-        return { chatMessages: [...state.chatMessages, msg] };
-      }),
+      },
 
       doSnap: () => set((state) => ({ triggerSnapCount: state.triggerSnapCount + 1 })),
       saveSlot: (id, name) => set((state) => {
