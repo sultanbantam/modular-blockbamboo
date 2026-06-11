@@ -63,11 +63,6 @@ interface GameState {
   savedSlots: SaveSlot[];
   language: 'id' | 'en';
   setLanguage: (lang: 'id' | 'en') => void;
-
-  gridSize: number;
-  showGrid: boolean;
-  setGridSize: (size: number) => void;
-  setShowGrid: (show: boolean) => void;
   
   // Multiplayer
   roomId: string | null;
@@ -153,11 +148,6 @@ export const useGameStore = create<GameState>()(
       language: 'id',
       setLanguage: (lang) => set({ language: lang }),
       
-      gridSize: 30,
-      showGrid: true,
-      setGridSize: (size) => set({ gridSize: size }),
-      setShowGrid: (show) => set({ showGrid: show }),
-
       // Multiplayer
       roomId: null,
       onlineUsers: [],
