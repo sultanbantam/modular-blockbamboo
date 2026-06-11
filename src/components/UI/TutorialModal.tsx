@@ -81,25 +81,25 @@ export function TutorialModal() {
 
   return (
     <div className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="bg-stone-900 border border-stone-700 w-full max-w-lg rounded-2xl shadow-2xl p-6 relative flex flex-col min-h-[400px]">
-        <div className="flex justify-between items-start mb-6">
-          <h2 className="text-2xl font-bold text-green-500 flex items-center gap-3">
-            <span className="text-3xl">{slides[step].icon}</span>
+      <div className="bg-stone-900 border border-stone-700 w-full max-w-lg max-h-[90vh] rounded-2xl shadow-2xl p-4 md:p-6 relative flex flex-col">
+        <div className="flex justify-between items-start mb-4 shrink-0">
+          <h2 className="text-xl md:text-2xl font-bold text-green-500 flex items-center gap-2 md:gap-3">
+            <span className="text-2xl md:text-3xl">{slides[step].icon}</span>
             {slides[step].title}
           </h2>
           <button 
             onClick={closeTutorial}
-            className="text-stone-500 hover:text-white bg-stone-800 rounded-full w-8 h-8 flex items-center justify-center"
+            className="text-stone-500 hover:text-white bg-stone-800 rounded-full w-8 h-8 flex items-center justify-center shrink-0"
           >
             ✕
           </button>
         </div>
 
-        <div className="text-stone-300 text-sm md:text-base leading-relaxed flex-1">
+        <div className="text-stone-300 text-sm md:text-base leading-relaxed flex-1 overflow-y-auto pr-2 min-h-0">
           {slides[step].content}
         </div>
 
-        <div className="flex items-center justify-between mt-8 pt-4 border-t border-stone-800">
+        <div className="flex items-center justify-between mt-4 pt-4 border-t border-stone-800 shrink-0">
           <div className="flex gap-2">
             {slides.map((_, i) => (
               <div 
