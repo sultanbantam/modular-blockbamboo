@@ -10,9 +10,8 @@ export async function POST(req: Request) {
 
     const apiKey = process.env.PI_API_KEY;
     if (!apiKey) {
-      // For Sandbox testing without API KEY, we just mock success
-      console.warn("No PI_API_KEY found. Mocking approval for payment:", paymentId);
-      return NextResponse.json({ message: 'Approved (Mock)' });
+      console.error("PI_API_KEY is missing in environment variables. You must set it in Vercel.");
+      return NextResponse.json({ error: 'Server misconfiguration: Missing PI_API_KEY' }, { status: 500 });
     }
 
     const response = await fetch(`https://api.minepi.com/v2/payments/${paymentId}/approve`, {
