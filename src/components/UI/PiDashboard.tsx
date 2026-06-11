@@ -94,14 +94,32 @@ export function PiDashboard({ onClose }: { onClose: () => void }) {
                   Kunci saldo in-game Anda selama 3D, 7D, 1M untuk mendapatkan bonus dan reward menarik!
                 </p>
                 <div className="flex gap-2">
-                  <input type="number" placeholder={`Jumlah ${currencySymbol}`} className={`w-full bg-stone-900 border border-stone-700 rounded px-3 py-2 text-stone-200 focus:outline-none focus:border-${currencyColor.split('-')[1]}-500`} />
-                  <button className={`${currencyBg} hover:opacity-90 text-white font-bold px-4 rounded transition-colors`}>Stake</button>
+                  <input 
+                    type="number" 
+                    id="stakeAmount"
+                    placeholder={`Jumlah ${currencySymbol}`} 
+                    className={`w-full bg-stone-900 border border-stone-700 rounded px-3 py-2 text-stone-200 focus:outline-none focus:border-${currencyColor.split('-')[1]}-500`} 
+                  />
+                  <button 
+                    onClick={() => {
+                      const input = document.getElementById('stakeAmount') as HTMLInputElement;
+                      if (input && input.value) {
+                        usePiStore.getState().stakeBalance(parseFloat(input.value));
+                        input.value = '';
+                      }
+                    }}
+                    className={`${currencyBg} hover:opacity-90 text-white font-bold px-4 rounded transition-colors`}
+                  >
+                    Stake
+                  </button>
                 </div>
               </div>
 
               <div className="bg-stone-800/50 border border-stone-700 rounded-xl p-4 flex justify-between items-center">
                 <span className="text-stone-300 text-sm">Total Sedang Di-stake</span>
-                <div className="text-xl font-bold text-stone-300">0.00 {currencySymbol}</div>
+                <div className="text-xl font-bold text-stone-300">
+                  {usePiStore.getState().stakedBalance.toFixed(2)} {currencySymbol}
+                </div>
               </div>
             </div>
           )}

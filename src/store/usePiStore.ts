@@ -12,10 +12,12 @@ interface PiState {
   error: string | null;
   authMethod: 'pi' | 'bamboochain' | null;
   bmcBalance: number;
+  stakedBalance: number;
   login: () => Promise<void>;
   skipLogin: () => void;
   loginWithBaMbooChain: () => void;
   purchaseProfile: (profileId: string, amount: number, onSuccess: () => void, onError: (err: any) => void) => void;
+  stakeBalance: (amount: number) => void;
 }
 
 declare global {
@@ -31,6 +33,7 @@ export const usePiStore = create<PiState>((set, get) => ({
   error: null,
   authMethod: null,
   bmcBalance: 0,
+  stakedBalance: 0,
   skipLogin: () => {
     set({
       user: { uid: 'test_uid_123', username: 'TestBuilder' },
@@ -80,12 +83,33 @@ export const usePiStore = create<PiState>((set, get) => ({
       // FALLBACK SEMENTARA: Jika API belum 100% jadi, berikan fallback agar game tetap bisa dites
       console.warn("API Gagal, menggunakan fallback sementara...");
       set({
-        user: { uid: 'bmc_fallback', username: 'BambooBuilder' },
+        user: { uid: 'bmc_fallback', username: 'Admin' }, // Menggunakan 'Admin' sesuai permintaan
         isAuthenticated: true,
         isAuthenticating: false,
         authMethod: 'bamboochain',
         bmcBalance: 2222.52 // Angka dari screenshot Anda
       });
+    }
+  },
+  stakeBalance: (amount) => {
+    const { bmcBalance, stakedBalance, authMethod } = get();
+    if (authMethod === 'bamboochain') {
+      if (amount <= 0) {
+        alert("Jumlah harus lebih dari 0");
+        return;
+      }
+      if (amount > bmcBalance) {
+        alert("Saldo BMC tidak mencukupi untuk di-stake!");
+        return;
+      }
+      set({
+        bmcBalance: bmcBalance - amount,
+        stakedBalance: stakedBalance + amount
+      });
+      alert(`Berhasil melakukan staking sebesar ${amount} BMC!`);
+    } else {
+      // Fake staking for Pi
+      alert(`Staking untuk Pi Network belum diimplementasikan di Testnet.`);
     }
   },
   purchaseProfile: async (profileId, amount, onSuccess, onError) => {
