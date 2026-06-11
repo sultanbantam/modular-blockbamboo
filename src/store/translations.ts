@@ -57,7 +57,6 @@ export const TRANSLATIONS = {
     gridCustomInput: "Ketik ukuran (cm)...",
 
     // Gallery
-    gallery: "Galeri Inspirasi",
     galleryTitle: "Galeri & Blueprint",
     galleryDesc: "Lihat karya terbaik komunitas atau jadikan sebagai template awal Anda.",
     uploadDesign: "Unggah Desain (Dapat Pi)",
@@ -120,7 +119,6 @@ export const TRANSLATIONS = {
     gridCustomInput: "Type size (cm)...",
 
     // Gallery
-    gallery: "Inspiration Gallery",
     galleryTitle: "Gallery & Blueprints",
     galleryDesc: "View the best community works or use them as your starting template.",
     uploadDesign: "Upload Design (Earn Pi)",
