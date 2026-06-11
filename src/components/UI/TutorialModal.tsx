@@ -21,17 +21,30 @@ export function TutorialModal() {
 
   const slides = [
     {
-      title: "Selamat Datang di BlockBamboo! 🌿",
+      title: "🚀 Selamat Datang di enPIneering! 🌿",
       content: (
         <div className="space-y-3">
-          <p>BlockBamboo adalah **Web3 Social Builder Game** eksklusif untuk Ekosistem Pi Network.</p>
-          <p>Di sini, Anda akan belajar menyusun purwarupa rumah bambu modular yang ramah lingkungan secara 3D.</p>
-          <div className="bg-amber-900/30 p-3 rounded border border-amber-800">
-            <strong>Misi Anda:</strong> Bangun rumah impian, kumpulkan XP, naikkan level profesi *Undagi*, dan kolaborasi dengan Pioneer lain!
+          <div className="flex justify-center mb-2">
+            <img src="/logo.png" alt="enPIneering Logo" className="h-20 w-auto drop-shadow-lg object-contain" />
           </div>
+          <p className="font-bold text-center text-amber-500 text-sm md:text-base">Dunia tempat para Pioneer menjadi Builder Masa Depan</p>
+          <p className="text-center italic text-stone-400 text-sm">Bangun. Berkreasi. Berkolaborasi.</p>
+          <p className="text-sm md:text-base text-center">Di enPIneering, setiap struktur yang Anda ciptakan adalah langkah menuju masa depan konstruksi yang lebih cerdas, modular, dan ramah lingkungan.</p>
+          <div className="bg-amber-900/30 p-3 rounded border border-amber-800 text-sm">
+            <strong className="block mb-2 text-amber-400">🎯 Misi Anda</strong>
+            <ul className="space-y-1">
+              <li>🏗 Bangun rumah impian dan kumpulkan XP</li>
+              <li>⭐ Tingkatkan level profesi Builder Anda</li>
+              <li>🤝 Bekerja sama dengan Pioneer dari seluruh dunia</li>
+              <li>🌎 Wujudkan ekosistem konstruksi hijau berbasis Pi Network</li>
+            </ul>
+          </div>
+          <p className="text-center font-bold text-green-500 text-sm">💚 Sendirian kita membangun rumah, bersama kita membangun peradaban.</p>
+          <p className="text-xs text-center text-stone-400">Undang teman dan sesama Pioneer untuk bergabung, dan jadilah bagian dari generasi pertama Builder enPIneering!</p>
+          <p className="text-center font-bold tracking-widest text-stone-500 mt-2 text-xs">Build • Connect • Earn</p>
         </div>
       ),
-      icon: "🏠"
+      icon: ""
     },
     {
       title: "Cara Bermain 🎮",
