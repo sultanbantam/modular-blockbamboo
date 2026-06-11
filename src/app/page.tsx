@@ -17,7 +17,6 @@ import { GalleryModal } from "@/components/UI/GalleryModal";
 import { ConstructionTimer } from "@/components/UI/ConstructionTimer";
 import { useGameStore } from "@/store/useGameStore";
 import { useState, useEffect } from "react";
-import { LoadingScreen } from '@/components/UI/LoadingScreen';
 
 export default function Home() {
   const isAuthenticated = usePiStore((state) => state.isAuthenticated);
