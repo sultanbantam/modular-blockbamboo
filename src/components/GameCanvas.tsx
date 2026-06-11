@@ -60,11 +60,11 @@ function Scene() {
       const targetPos = new THREE.Vector3();
       
       switch (cameraView) {
-        case 'top': targetPos.set(0, distance, 0.1); break;
-        case 'front': targetPos.set(0, 2, distance); break;
-        case 'back': targetPos.set(0, 2, -distance); break;
-        case 'left': targetPos.set(-distance, 2, 0); break;
-        case 'right': targetPos.set(distance, 2, 0); break;
+        case 'atas': targetPos.set(0, distance, 0.1); break;
+        case 'depan': targetPos.set(0, 2, distance); break;
+        case 'blkng': targetPos.set(0, 2, -distance); break;
+        case 'kiri': targetPos.set(-distance, 2, 0); break;
+        case 'kanan': targetPos.set(distance, 2, 0); break;
       }
       
       camera.position.copy(targetPos);
