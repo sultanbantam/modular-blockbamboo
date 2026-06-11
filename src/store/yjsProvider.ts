@@ -61,7 +61,18 @@ class YjsManager {
 
     // Use default public signaling servers for WebrtcProvider
     this.provider = new WebrtcProvider(roomId, this.ydoc, {
-      signaling: ['wss://signaling.yjs.dev', 'wss://y-webrtc-signaling-eu.herokuapp.com']
+      signaling: [
+        'wss://signaling.yjs.dev',
+        'wss://y-webrtc-signaling-eu.herokuapp.com',
+        'wss://y-webrtc-ckynwnzncc.now.sh'
+      ],
+      peerOpts: {
+        iceServers: [
+          { urls: 'stun:stun.l.google.com:19302' },
+          { urls: 'stun:stun1.l.google.com:19302' },
+          { urls: 'stun:stun2.l.google.com:19302' }
+        ]
+      }
     });
 
     this.awareness = this.provider.awareness;

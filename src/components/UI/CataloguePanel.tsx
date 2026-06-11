@@ -75,8 +75,8 @@ export function CataloguePanel() {
 
       <div className={`
         fixed md:absolute md:left-4 md:top-24 md:w-80 md:max-h-[calc(100vh-7rem)]
-        ${isOpen ? 'inset-x-0 bottom-0 h-[65dvh] rounded-t-3xl border-t' : 'hidden md:flex'}
-        bg-stone-800/95 backdrop-blur border-stone-700 md:rounded-xl md:border p-4 pb-16 md:pb-4 flex-col pointer-events-auto shadow-2xl z-40 transition-all overflow-hidden
+        ${isOpen ? 'inset-x-0 bottom-0 top-[35vh] rounded-t-3xl border-t' : 'hidden md:flex'}
+        bg-stone-800/95 backdrop-blur border-stone-700 md:rounded-xl md:border p-4 pb-12 md:pb-4 flex-col pointer-events-auto shadow-2xl z-40 transition-all overflow-hidden
       `}>
         <div className="flex justify-between items-center mb-4 border-b border-stone-700 pb-2 shrink-0">
           <h2 className="text-xl font-bold text-stone-100">{t('catalogueTitle')}</h2>
@@ -102,7 +102,7 @@ export function CataloguePanel() {
         </button>
       </div>
 
-      <div className="flex-1 min-h-0 overflow-y-auto space-y-2 pr-2 pb-8 custom-scrollbar">
+      <div className="flex-1 min-h-0 overflow-y-auto space-y-2 pr-2 pb-8 custom-scrollbar touch-pan-y overscroll-contain">
         {PROFILES.map((profile) => {
           const isUnlocked = unlockedProfiles.includes(profile.type);
           const isSelected = selectedBlockType === profile.type;
