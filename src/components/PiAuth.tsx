@@ -33,9 +33,9 @@ export default function PiAuth() {
           <button
             onClick={() => login()}
             disabled={isAuthenticating}
-            className="w-full bg-[#fbbc05] hover:bg-[#f2a900] text-black font-bold py-3 px-4 rounded-lg transition duration-200 flex justify-center items-center"
+            className={`w-full bg-[#fbbc05] hover:bg-[#f2a900] text-black font-bold py-3 px-4 rounded-lg transition duration-200 flex justify-center items-center ${isAuthenticating ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
-            {isAuthenticating ? (
+            {isAuthenticating && usePiStore.getState().authMethod !== 'bamboochain' ? (
               <span className="animate-pulse">Connecting to Pi Network...</span>
             ) : (
               <span>Login with Pi</span>
@@ -45,10 +45,16 @@ export default function PiAuth() {
           <button
             onClick={() => usePiStore.getState().loginWithBaMbooChain()}
             disabled={isAuthenticating}
-            className="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-4 rounded-lg transition duration-200 flex justify-center items-center gap-2"
+            className={`w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-4 rounded-lg transition duration-200 flex justify-center items-center gap-2 ${isAuthenticating ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
-            <span className="text-xl">🌿</span>
-            <span>Login with BaMbooChain</span>
+            {isAuthenticating && usePiStore.getState().authMethod === 'bamboochain' ? (
+              <span className="animate-pulse flex items-center gap-2"><span className="text-xl">🌿</span> Connecting to BaMbooChain...</span>
+            ) : (
+              <>
+                <span className="text-xl">🌿</span>
+                <span>Login with BaMbooChain</span>
+              </>
+            )}
           </button>
         </div>
 

@@ -44,7 +44,7 @@ export const usePiStore = create<PiState>((set, get) => ({
     });
   },
   loginWithBaMbooChain: async () => {
-    set({ isAuthenticating: true, error: null });
+    set({ isAuthenticating: true, error: null, authMethod: 'bamboochain' });
     try {
       // Panggil API asli yang baru saja Anda deploy di Vercel!
       // Menggunakan mock data untuk auth_code karena ini simulasi SSO sederhana
