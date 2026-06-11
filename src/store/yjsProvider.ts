@@ -60,27 +60,28 @@ class YjsManager {
 
     this.roomId = roomId;
 
-    // Use default public signaling servers for WebrtcProvider
+    // Use default signaling servers (y-webrtc-eu.fly.dev)
     this.provider = new WebrtcProvider(roomId, this.ydoc, {
-      signaling: [
-        'wss://signaling.yjs.dev',
-        'wss://y-webrtc-signaling-eu.herokuapp.com',
-        'wss://y-webrtc-ckynwnzncc.now.sh'
-      ],
       peerOpts: {
         iceServers: [
           { urls: 'stun:stun.l.google.com:19302' },
           { urls: 'stun:stun1.l.google.com:19302' },
-          { urls: 'stun:stun2.l.google.com:19302' }
+          { urls: 'stun:stun2.l.google.com:19302' },
+          {
+            urls: 'turn:openrelay.metered.ca:80',
+            username: 'openrelayproject',
+            credential: 'openrelayproject'
+          },
+          {
+            urls: 'turn:openrelay.metered.ca:443',
+            username: 'openrelayproject',
+            credential: 'openrelayproject'
+          }
         ]
       }
     });
 
-    // Fallback guaranteed WebSocket relay (if WebRTC fails due to NAT/Firewall)
-    this.wsProvider = new WebsocketProvider('wss://demos.yjs.dev', roomId, this.ydoc);
-
-    // Prefer WebSocket awareness for more reliable cursor/presence sync
-    this.awareness = this.wsProvider.awareness;
+    this.awareness = this.provider.awareness;
 
     // Set local state
     this.awareness.setLocalStateField('user', {
@@ -101,11 +102,6 @@ class YjsManager {
       this.provider.disconnect();
       this.provider.destroy();
       this.provider = null;
-    }
-    if (this.wsProvider) {
-      this.wsProvider.disconnect();
-      this.wsProvider.destroy();
-      this.wsProvider = null;
     }
     this.roomId = null;
   }
