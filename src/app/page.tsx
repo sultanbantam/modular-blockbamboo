@@ -11,8 +11,19 @@ import { ActionBar } from "@/components/UI/ActionBar";
 import { InGameChat } from "@/components/UI/InGameChat";
 import { usePiStore } from "@/store/usePiStore";
 
+import { TutorialModal } from "@/components/UI/TutorialModal";
+import { GalleryModal } from "@/components/UI/GalleryModal";
+import { useGameStore } from "@/store/useGameStore";
+import { useState } from "react";
+
 export default function Home() {
   const isAuthenticated = usePiStore((state) => state.isAuthenticated);
+  const [showGallery, setShowGallery] = useState(false);
+
+  // Expose setShowGallery to window for easy access from TopControls
+  if (typeof window !== 'undefined') {
+    (window as any).setShowGallery = setShowGallery;
+  }
 
   if (!isAuthenticated) {
     return <PiAuth />;
@@ -34,6 +45,8 @@ export default function Home() {
       <ContextMenu />
       <ActionBar />
       <InGameChat />
+      <TutorialModal />
+      {showGallery && <GalleryModal onClose={() => setShowGallery(false)} />}
     </main>
   );
 }

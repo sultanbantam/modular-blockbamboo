@@ -48,7 +48,7 @@ interface GameState {
   transformMode: 'translate' | 'rotate'; // Gizmo mode
   isPanMode: boolean;
   showHelpers: boolean;
-  cameraView: string | null;
+  cameraView: 'atas' | 'depan' | 'blkng' | 'kiri' | 'kanan' | null;
   pastBlocks: BlockData[][];
   futureBlocks: BlockData[][];
   hoverPos: [number, number, number] | null;
@@ -59,6 +59,13 @@ interface GameState {
   xp: number;
   triggerSnapCount: number;
   savedSlots: SaveSlot[];
+  language: 'id' | 'en';
+  setLanguage: (lang: 'id' | 'en') => void;
+
+  gridSize: number;
+  showGrid: boolean;
+  setGridSize: (size: number) => void;
+  setShowGrid: (show: boolean) => void;
   
   // Multiplayer
   roomId: string | null;
@@ -136,6 +143,14 @@ export const useGameStore = create<GameState>()(
       xp: 0,
       triggerSnapCount: 0,
       savedSlots: [],
+      
+      language: 'id',
+      setLanguage: (lang) => set({ language: lang }),
+      
+      gridSize: 30,
+      showGrid: true,
+      setGridSize: (size) => set({ gridSize: size }),
+      setShowGrid: (show) => set({ showGrid: show }),
 
       // Multiplayer
       roomId: null,

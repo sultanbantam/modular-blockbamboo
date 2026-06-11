@@ -3,9 +3,17 @@ import { useGameStore } from '@/store/useGameStore';
 
 import { useState } from 'react';
 
+import { useTranslation } from '@/hooks/useTranslation';
+
 export function AdvancedControls() {
-  const { blocks, editingId, customRotation, setCustomRotation, flipAxis, setFlipAxis, selectedBlockType, updateBlockPosition, updateBlockRotation, updateBlockScale, transformMode, setTransformMode, duplicateBlock } = useGameStore();
+  const { 
+    blocks, editingId, customRotation, setCustomRotation, flipAxis, setFlipAxis, 
+    selectedBlockType, updateBlockPosition, updateBlockRotation, updateBlockScale, 
+    transformMode, setTransformMode, duplicateBlock,
+    level, gridSize, showGrid, setGridSize, setShowGrid
+  } = useGameStore();
   const [isOpen, setIsOpen] = useState(false);
+  const { t } = useTranslation();
 
   const editingBlock = editingId ? blocks.find(b => b.id === editingId) : null;
 
@@ -169,6 +177,67 @@ export function AdvancedControls() {
               </button>
             </div>
           )}
+
+          {/* Grid Settings */}
+          <div className="pt-4 border-t border-stone-700 flex flex-col gap-2">
+            <div className="flex justify-between items-center mb-1">
+              <p className="text-xs text-stone-400 font-semibold">{t('advancedControls').toUpperCase()}</p>
+            </div>
+            
+            <label className="flex items-center gap-2 cursor-pointer text-sm">
+              <input 
+                type="checkbox" 
+                checked={showGrid}
+                onChange={(e) => setShowGrid(e.target.checked)}
+                className="rounded border-stone-600 text-amber-600 focus:ring-amber-500 bg-stone-800"
+              />
+              <span className="text-stone-300">{t('showGrid')}</span>
+            </label>
+
+            <div className="flex flex-col gap-1 mt-2">
+              <label className="text-xs text-stone-500">{t('gridSize')}</label>
+              {level < 2 ? (
+                <div className="bg-stone-800 border border-stone-700 text-stone-500 px-3 py-2 rounded text-sm flex items-center justify-between opacity-70">
+                  <span>30 cm</span>
+                  <span className="text-[10px]">🔒 {t('gridSizeLocked')}</span>
+                </div>
+              ) : level < 17 ? (
+                <select 
+                  value={gridSize}
+                  onChange={(e) => setGridSize(Number(e.target.value))}
+                  className="bg-stone-900 border border-stone-700 rounded px-3 py-2 text-sm text-stone-200 focus:outline-none focus:border-amber-500"
+                >
+                  <option value={30}>30 cm</option>
+                  <option value={60}>60 cm</option>
+                  <option value={90}>90 cm</option>
+                  <option value={100}>100 cm (1m)</option>
+                </select>
+              ) : (
+                <div className="flex gap-2">
+                  <select 
+                    value={[30,60,90,100].includes(gridSize) ? gridSize : 'custom'}
+                    onChange={(e) => {
+                      if (e.target.value !== 'custom') setGridSize(Number(e.target.value));
+                    }}
+                    className="flex-1 bg-stone-900 border border-stone-700 rounded px-2 py-2 text-sm text-stone-200 focus:outline-none focus:border-amber-500"
+                  >
+                    <option value={30}>30 cm</option>
+                    <option value={60}>60 cm</option>
+                    <option value={90}>90 cm</option>
+                    <option value={100}>100 cm (1m)</option>
+                    <option value="custom">Custom...</option>
+                  </select>
+                  <input
+                    type="number"
+                    value={gridSize}
+                    onChange={(e) => setGridSize(Number(e.target.value) || 30)}
+                    placeholder={t('gridCustomInput')}
+                    className="w-16 bg-stone-900 border border-stone-700 rounded px-2 py-2 text-sm text-stone-200 focus:outline-none focus:border-amber-500 text-center"
+                  />
+                </div>
+              )}
+            </div>
+          </div>
 
           <p className="text-[10px] text-stone-500 leading-tight mt-4 bg-stone-800/30 p-2 rounded">
             {editingBlock 
