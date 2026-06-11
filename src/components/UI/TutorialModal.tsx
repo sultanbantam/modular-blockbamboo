@@ -50,11 +50,12 @@ export function TutorialModal() {
       title: "Cara Bermain 🎮",
       content: (
         <div className="space-y-3">
-          <ul className="list-disc pl-5 space-y-2">
+          <ul className="list-disc pl-5 space-y-2 text-sm md:text-base">
             <li>Pilih blok/profil bambu dari <strong>Katalog</strong> di sebelah kiri.</li>
-            <li>Klik kiri di area tengah (titik <em>Snap</em> merah) untuk menempatkan blok.</li>
+            <li><strong>Desktop:</strong> Klik kiri di area tengah (titik <em>Snap</em> merah) untuk menempatkan blok.</li>
+            <li><strong>HP / Tablet:</strong> Sentuh (Tap) pada area snap untuk menempatkan blok. Gunakan dua jari (Pinch) untuk Zoom, dan geser dengan satu jari untuk memutar kamera.</li>
             <li>Susun blok saling mengunci (<em>interlocking</em>) untuk mendapatkan bonus XP berlipat ganda!</li>
-            <li>Klik Kanan pada blok yang sudah ditaruh untuk menghapus atau menyesuaikan posisinya.</li>
+            <li>Klik Kanan (atau Tahan/Long Press di HP) pada blok yang sudah ditaruh untuk menghapus atau menyesuaikan posisinya.</li>
             <li>Gunakan <strong>Mouse</strong> (Klik + Geser) atau tombol <strong>W/A/S/D</strong> untuk memutar dan menggerakkan kamera.</li>
           </ul>
         </div>
@@ -65,8 +66,8 @@ export function TutorialModal() {
       title: "Ekosistem Web3 & Multiplayer 🌐",
       content: (
         <div className="space-y-3">
-          <p>BlockBamboo bukan sekadar mainan sendiri. Anda bisa mengundang teman untuk membangun bersama (Co-Op)!</p>
-          <ul className="list-disc pl-5 space-y-2">
+          <p className="text-sm md:text-base">enPIneering bukan sekadar mainan sendiri. Anda bisa mengundang teman untuk membangun bersama (Co-Op)!</p>
+          <ul className="list-disc pl-5 space-y-2 text-sm md:text-base">
             <li>Gunakan fitur <strong>Multiplayer</strong> di menu atas untuk membuat ruangan (Room).</li>
             <li>Bagikan nama Room ke teman Anda. Mereka akan langsung muncul di kanvas Anda secara <em>Real-Time</em>.</li>
             <li>Gunakan fitur <strong>Kas Proyek / Donasi Pi</strong> untuk menggalang dana (*Prize Pool*) bersama tim Anda menggunakan Pi Wallet.</li>

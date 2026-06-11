@@ -15,6 +15,17 @@ export const TRANSLATIONS = {
     resetCamera: "Reset Kamera",
     wallet: "Dompet Pi",
 
+    // TopControls
+    gallery: "Galeri & Blueprint",
+    help: "Bantuan / Tutorial",
+
+    // Camera
+    cam_atas: "Atas",
+    cam_depan: "Depan",
+    cam_blkng: "Blkng",
+    cam_kiri: "Kiri",
+    cam_kanan: "Kanan",
+
     // Catalogue
     catalogue: "Katalog",
     catalogueTitle: "Katalog Profil",
@@ -66,6 +77,17 @@ export const TRANSLATIONS = {
     snapToggle: "Show / Hide Snap Helpers",
     resetCamera: "Reset Camera",
     wallet: "Pi Wallet",
+
+    // TopControls
+    gallery: "Gallery & Blueprints",
+    help: "Help / Tutorial",
+    
+    // Camera
+    cam_atas: "Top",
+    cam_depan: "Front",
+    cam_blkng: "Back",
+    cam_kiri: "Left",
+    cam_kanan: "Right",
 
     // Catalogue
     catalogue: "Catalogue",

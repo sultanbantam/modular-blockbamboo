@@ -5,6 +5,7 @@ import { SaveLoadModal } from './SaveLoadModal';
 import { LevelDisplay } from './LevelDisplay';
 import { MultiplayerLobby } from './MultiplayerLobby';
 import { useTranslation } from '@/hooks/useTranslation';
+import { TRANSLATIONS } from '@/store/translations';
 
 export function TopControls() {
   const [showDashboard, setShowDashboard] = useState(false);
@@ -29,9 +30,8 @@ export function TopControls() {
         
         {/* Left: Logo & Level */}
         <div className="flex items-center gap-4 lg:gap-6 w-full lg:w-auto justify-between lg:justify-start mb-2 lg:mb-0">
-          <div className="flex flex-col">
-            <h1 className="text-xl md:text-2xl font-bold text-green-500 drop-shadow-md leading-tight">{t('appTitle')}</h1>
-            <p className="text-xs text-stone-300">{t('appSubtitle')}</p>
+          <div className="flex flex-col justify-center">
+            <img src="/logo2.png" alt="enPIneering Logo" className="h-6 md:h-8 w-auto object-contain drop-shadow-md" />
           </div>
           
           <div className="block scale-90 origin-right lg:scale-100">
@@ -142,9 +142,9 @@ export function TopControls() {
               <button 
                 key={view}
                 onClick={() => setCameraView(view)}
-                className="px-2 py-1 text-xs rounded transition-colors text-stone-300 hover:bg-stone-800 hover:text-white font-mono capitalize"
+                className="px-2 py-1 text-xs rounded transition-colors text-stone-300 hover:bg-stone-800 hover:text-white font-mono"
               >
-                {view}
+                {t(`cam_${view}` as keyof typeof TRANSLATIONS['id'])}
               </button>
             ))}
             <button 
@@ -152,7 +152,7 @@ export function TopControls() {
                 className="p-1.5 rounded transition-colors text-stone-400 hover:bg-stone-800 hover:text-white"
                 title={t('resetCamera')}
               >
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg>
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
             </button>
           </div>
 
