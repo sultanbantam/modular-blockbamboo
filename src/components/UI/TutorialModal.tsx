@@ -21,7 +21,7 @@ export function TutorialModal() {
 
   const slides = [
     {
-      title: "🚀 Selamat Datang di enPIneering! 🌿",
+      title: <>🚀 Selamat Datang di <span className="whitespace-nowrap">enPIneering! 🌿</span></>,
       content: (
         <div className="space-y-3">
           <div className="flex justify-center mb-2">
@@ -47,7 +47,7 @@ export function TutorialModal() {
       icon: ""
     },
     {
-      title: "Cara Bermain 🎮",
+      title: <>Cara Bermain <span className="whitespace-nowrap">🎮</span></>,
       content: (
         <div className="space-y-3">
           <ul className="list-disc pl-5 space-y-2 text-sm md:text-base">
@@ -63,7 +63,7 @@ export function TutorialModal() {
       icon: "🖱️"
     },
     {
-      title: "Ekosistem Web3 & Multiplayer 🌐",
+      title: <>Ekosistem Web3 & <span className="whitespace-nowrap">Multiplayer 🌐</span></>,
       content: (
         <div className="space-y-3">
           <p className="text-sm md:text-base">enPIneering bukan sekadar mainan sendiri. Anda bisa mengundang teman untuk membangun bersama (Co-Op)!</p>
