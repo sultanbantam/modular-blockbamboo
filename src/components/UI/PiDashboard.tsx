@@ -81,13 +81,19 @@ export function PiDashboard({ onClose }: { onClose: () => void }) {
               </div>
 
               <div className="grid grid-cols-2 gap-3">
-                <button className="bg-stone-800 hover:bg-stone-700 text-stone-200 py-3 rounded-xl font-bold transition-colors border border-stone-700 flex flex-col items-center gap-1">
+                <button 
+                  onClick={() => window.open('https://www.bamboochain.id/#/bamboochain/token-wallet', '_blank')}
+                  className="bg-stone-800 hover:bg-stone-700 text-stone-200 py-3 rounded-xl font-bold transition-colors border border-stone-700 flex flex-col items-center gap-1"
+                >
                   <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 11l5-5m0 0l5 5m-5-5v12" /></svg>
-                  <span className="text-sm">Deposit</span>
+                  <span className="text-sm">Top Up BMC</span>
                 </button>
-                <button className="bg-stone-800 hover:bg-stone-700 text-stone-200 py-3 rounded-xl font-bold transition-colors border border-stone-700 flex flex-col items-center gap-1">
+                <button 
+                  onClick={() => window.open('https://www.bamboochain.id/#/bamboochain/token-wallet', '_blank')}
+                  className="bg-stone-800 hover:bg-stone-700 text-stone-200 py-3 rounded-xl font-bold transition-colors border border-stone-700 flex flex-col items-center gap-1"
+                >
                   <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 13l-5 5m0 0l-5-5m5 5V6" /></svg>
-                  <span className="text-sm">Withdraw</span>
+                  <span className="text-sm">Tarik Dana</span>
                 </button>
               </div>
             </div>
