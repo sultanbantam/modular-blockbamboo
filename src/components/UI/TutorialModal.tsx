@@ -21,11 +21,11 @@ export function TutorialModal() {
 
   const slides = [
     {
-      title: <>🚀 Selamat Datang di <span className="whitespace-nowrap">enPIneering! 🌿</span></>,
+      title: <span className="whitespace-nowrap text-lg md:text-xl">🚀 Selamat Datang di enPIneering! 🌿</span>,
       content: (
         <div className="space-y-3">
           <div className="flex justify-center mb-2">
-            <img src="/logo.png" alt="enPIneering Logo" className="h-20 w-auto drop-shadow-lg object-contain" />
+            <img src="/logo2.png" alt="enPIneering Logo" className="h-20 w-auto drop-shadow-lg object-contain" />
           </div>
           <p className="font-bold text-center text-amber-500 text-sm md:text-base">Dunia tempat para Pioneer menjadi Builder Masa Depan</p>
           <p className="text-center italic text-stone-400 text-sm">Bangun. Berkreasi. Berkolaborasi.</p>
@@ -47,7 +47,7 @@ export function TutorialModal() {
       icon: ""
     },
     {
-      title: <>Cara Bermain <span className="whitespace-nowrap">🎮</span></>,
+      title: <span className="whitespace-nowrap">Cara Bermain 🎮</span>,
       content: (
         <div className="space-y-3">
           <ul className="list-disc pl-5 space-y-2 text-sm md:text-base">
@@ -63,14 +63,14 @@ export function TutorialModal() {
       icon: "🖱️"
     },
     {
-      title: <>Ekosistem Web3 & <span className="whitespace-nowrap">Multiplayer 🌐</span></>,
+      title: <span className="whitespace-nowrap text-lg md:text-xl">Ekosistem Web3 & Multiplayer 🌐</span>,
       content: (
         <div className="space-y-3">
           <p className="text-sm md:text-base">enPIneering bukan sekadar mainan sendiri. Anda bisa mengundang teman untuk membangun bersama (Co-Op)!</p>
           <ul className="list-disc pl-5 space-y-2 text-sm md:text-base">
             <li>Gunakan fitur <strong>Multiplayer</strong> di menu atas untuk membuat ruangan (Room).</li>
             <li>Bagikan nama Room ke teman Anda. Mereka akan langsung muncul di kanvas Anda secara <em>Real-Time</em>.</li>
-            <li>Gunakan fitur <strong>Kas Proyek / Donasi Pi</strong> untuk menggalang dana (*Prize Pool*) bersama tim Anda menggunakan Pi Wallet.</li>
+            <li>Gunakan fitur <strong>Kas Proyek / Donasi Pi / Donasi BMC</strong> untuk menggalang dana (*Prize Pool*) bersama tim Anda menggunakan Pi Wallet.</li>
             <li>Anda juga bisa mengobrol (Chat) langsung di dalam game.</li>
           </ul>
         </div>
