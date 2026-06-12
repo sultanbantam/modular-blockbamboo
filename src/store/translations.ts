@@ -13,7 +13,7 @@ export const TRANSLATIONS = {
     buildMode: "Mode Pembangunan (Pasang/Edit Blok)",
     snapToggle: "Tampilkan / Sembunyikan Bantuan Pemasangan",
     resetCamera: "Reset Kamera",
-    wallet: "Dompet Pi",
+    wallet: "Wallet",
 
     // TopControls
     gallery: "Galeri & Blueprint",
@@ -75,7 +75,12 @@ export const TRANSLATIONS = {
 
     // Material Calculator
     materialCalcTitle: "Kalkulator Material",
-    noAssembledProfiles: "Belum ada profil yang dirakit."
+    noAssembledProfiles: "Belum ada profil yang dirakit.",
+
+    // Timer
+    activeProject: "PROYEK AKTIF",
+    progressTitle: "PROGRESS",
+    blocksInstalled: "Blok"
   },
   en: {
     // Header & Tooltips
@@ -91,7 +96,7 @@ export const TRANSLATIONS = {
     buildMode: "Build Mode (Place/Edit Block)",
     snapToggle: "Show / Hide Snap Helpers",
     resetCamera: "Reset Camera",
-    wallet: "Pi Wallet",
+    wallet: "Wallet",
 
     // TopControls
     gallery: "Gallery & Blueprints",
@@ -153,6 +158,11 @@ export const TRANSLATIONS = {
 
     // Material Calculator
     materialCalcTitle: "Material Calculator",
-    noAssembledProfiles: "No profiles assembled yet."
+    noAssembledProfiles: "No profiles assembled yet.",
+
+    // Timer
+    activeProject: "ACTIVE PROJECT",
+    progressTitle: "PROGRESS",
+    blocksInstalled: "Blocks"
   }
 };

@@ -62,12 +62,7 @@ export default function PiAuth() {
           </button>
         </div>
 
-        <button
-          onClick={() => skipLogin()}
-          className="text-sm text-stone-500 hover:text-stone-300 underline"
-        >
-          Skip Login (Test Mode)
-        </button>
+
 
         {error && (
           <div className="mt-4 p-3 bg-red-900/50 border border-red-500 rounded text-red-200 text-sm">
