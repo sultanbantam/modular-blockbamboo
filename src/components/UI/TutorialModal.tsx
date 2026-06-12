@@ -25,7 +25,7 @@ export function TutorialModal() {
       content: (
         <div className="space-y-3">
           <div className="flex justify-center mb-2">
-            <img src="/logo2.png" alt="enPIneering Logo" className="h-20 w-auto drop-shadow-lg object-contain" />
+            <img src="/logo2.png" alt="enPIneering Logo" className="h-40 w-auto drop-shadow-lg object-contain" />
           </div>
           <p className="font-bold text-center text-amber-500 text-sm md:text-base">Dunia tempat para Pioneer menjadi Builder Masa Depan</p>
           <p className="text-center italic text-stone-400 text-sm">Bangun. Berkreasi. Berkolaborasi.</p>
