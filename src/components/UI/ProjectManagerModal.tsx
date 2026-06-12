@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useGameStore } from '@/store/useGameStore';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export function ProjectManagerModal({ onClose }: { onClose: () => void }) {
   const { savedSlots, saveSlot, loadSlot, deleteSlot, newProject, projectName } = useGameStore();
   const [newSaveName, setNewSaveName] = useState(projectName);
+  const { t } = useTranslation();
 
   const formatTime = (seconds: number) => {
     const h = Math.floor(seconds / 3600);
@@ -17,9 +19,9 @@ export function ProjectManagerModal({ onClose }: { onClose: () => void }) {
         <div className="p-6 border-b border-stone-800 flex justify-between items-center bg-stone-800/30 rounded-t-2xl">
           <div>
             <h2 className="text-2xl font-bold text-stone-100 flex items-center gap-2">
-              <span>🏗️</span> Manajemen Proyek
+              <span>🏗️</span> {t('projectManagerTitle')}
             </h2>
-            <p className="text-stone-400 text-sm mt-1">Simpan dan muat kembali progress pembangunan Anda</p>
+            <p className="text-stone-400 text-sm mt-1">{t('projectManagerDesc')}</p>
           </div>
           <button onClick={onClose} className="p-2 hover:bg-stone-800 rounded-full text-stone-400 hover:text-white transition-colors">
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
@@ -29,7 +31,7 @@ export function ProjectManagerModal({ onClose }: { onClose: () => void }) {
         <div className="p-6 flex-1 overflow-y-auto">
           {/* New / Save Current */}
           <div className="mb-8 bg-stone-800/50 p-4 rounded-xl border border-stone-700/50">
-            <h3 className="text-stone-300 font-bold mb-3 uppercase text-xs tracking-wider">Aksi Cepat</h3>
+            <h3 className="text-stone-300 font-bold mb-3 uppercase text-xs tracking-wider">{t('quickAction')}</h3>
             <div className="flex gap-4">
               <button
                 onClick={() => {
@@ -40,7 +42,7 @@ export function ProjectManagerModal({ onClose }: { onClose: () => void }) {
                 }}
                 className="flex-1 bg-stone-700 hover:bg-stone-600 text-stone-200 py-3 rounded-lg font-bold transition flex items-center justify-center gap-2 border border-stone-600"
               >
-                <span>➕</span> Proyek Baru
+                <span>➕</span> {t('newProject')}
               </button>
               
               <div className="flex-1 flex gap-2">
@@ -59,7 +61,7 @@ export function ProjectManagerModal({ onClose }: { onClose: () => void }) {
                   }}
                   className="bg-amber-600 hover:bg-amber-500 text-white px-4 rounded-lg font-bold transition flex items-center justify-center gap-2"
                 >
-                  <span>💾</span> Simpan
+                  <span>💾</span> {t('save')}
                 </button>
               </div>
             </div>
@@ -67,10 +69,10 @@ export function ProjectManagerModal({ onClose }: { onClose: () => void }) {
 
           {/* Load Slots */}
           <div>
-            <h3 className="text-stone-300 font-bold mb-3 uppercase text-xs tracking-wider">Daftar Proyek Tersimpan</h3>
+            <h3 className="text-stone-300 font-bold mb-3 uppercase text-xs tracking-wider">{t('savedProjects')}</h3>
             {savedSlots.length === 0 ? (
               <div className="text-center py-8 border border-dashed border-stone-700 rounded-xl text-stone-500">
-                Belum ada proyek yang disimpan
+                {t('noSavedProjects')}
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

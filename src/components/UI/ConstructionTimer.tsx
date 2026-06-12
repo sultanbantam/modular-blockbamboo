@@ -25,16 +25,20 @@ export function ConstructionTimer() {
   };
 
   return (
-    <div className="absolute top-4 right-4 bg-stone-900/80 border border-stone-700/50 backdrop-blur-sm rounded-xl px-4 py-2 flex flex-col items-end pointer-events-none z-40 select-none shadow-lg">
-      <div className="flex items-center gap-2">
-        <span className="text-stone-400 text-xs font-bold uppercase tracking-wider">{projectName}</span>
+    <div className="absolute top-[72px] left-1/2 -translate-x-1/2 bg-stone-900/80 border border-stone-700/50 backdrop-blur-sm rounded-xl px-4 py-2 flex flex-row items-center gap-4 pointer-events-none z-40 select-none shadow-lg">
+      <div className="flex flex-col items-start border-r border-stone-700 pr-4">
+        <span className="text-stone-400 text-[10px] font-bold uppercase tracking-wider">Proyek Aktif</span>
+        <span className="text-stone-200 text-sm font-bold truncate max-w-[150px]">{projectName}</span>
       </div>
-      <div className="flex items-center gap-2 mt-1">
+      
+      <div className="flex items-center gap-2 border-r border-stone-700 pr-4">
         <span className="text-amber-400 animate-pulse">⏱️</span>
         <span className="text-stone-200 font-mono text-xl font-bold tracking-widest">{formatTime(activeWorkTime)}</span>
       </div>
-      <div className="text-[10px] text-stone-500 mt-1 uppercase tracking-wider">
-        {blocks.length} Blok Terpasang
+
+      <div className="flex flex-col items-end">
+        <span className="text-[10px] text-stone-500 uppercase tracking-wider">Progress</span>
+        <span className="text-green-400 text-sm font-bold">{blocks.length} Blok</span>
       </div>
     </div>
   );

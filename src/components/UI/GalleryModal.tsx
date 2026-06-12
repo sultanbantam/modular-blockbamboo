@@ -105,13 +105,13 @@ export function GalleryModal({ onClose }: { onClose: () => void }) {
               onClick={() => setActiveTab('official')}
               className={`pb-3 font-bold border-b-2 transition-all ${activeTab === 'official' ? 'border-amber-500 text-amber-400' : 'border-transparent text-stone-500 hover:text-stone-300'}`}
             >
-              Official Blueprints
+              {t('officialBlueprints')}
             </button>
             <button 
               onClick={() => setActiveTab('community')}
               className={`pb-3 font-bold border-b-2 transition-all ${activeTab === 'community' ? 'border-amber-500 text-amber-400' : 'border-transparent text-stone-500 hover:text-stone-300'}`}
             >
-              Community (UGC)
+              {t('communityUGC')}
             </button>
           </div>
 
@@ -149,7 +149,7 @@ export function GalleryModal({ onClose }: { onClose: () => void }) {
                     onClick={() => handleUseBlueprint(bp)}
                     className="w-full py-2 bg-stone-800 hover:bg-amber-600 hover:text-white text-stone-300 font-bold rounded transition-colors"
                   >
-                    {bp.price > 0 ? `Beli & Gunakan` : 'Gunakan Blueprint'}
+                    {bp.price > 0 ? t('buyConfirm').replace('{name}', bp.title).replace('{price}', bp.price.toString()) : t('useBlueprint')}
                   </button>
                 </div>
               </div>

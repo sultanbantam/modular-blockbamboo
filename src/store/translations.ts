@@ -51,6 +51,7 @@ export const TRANSLATIONS = {
     // Advanced Controls (Grid & Theme)
     advancedControls: "Pengaturan Lanjutan",
     showGrid: "Tampilkan Grid Dasar",
+    showGridDesc: "Tampilkan garis grid referensi di lantai",
     gridSize: "Ukuran Grid",
     gridSizeLocked: "Terkunci (Perlu Specialist 1)",
     gridCustomLocked: "Terkunci (Perlu Specialist 6)",
@@ -60,6 +61,21 @@ export const TRANSLATIONS = {
     galleryTitle: "Galeri & Blueprint",
     galleryDesc: "Lihat karya terbaik komunitas atau jadikan sebagai template awal Anda.",
     uploadDesign: "Unggah Desain (Dapat Pi)",
+    useBlueprint: "Gunakan Blueprint",
+    officialBlueprints: "Official Blueprints",
+    communityUGC: "Community (UGC)",
+
+    // Project Manager
+    projectManagerTitle: "Manajemen Proyek",
+    projectManagerDesc: "Simpan dan muat kembali progress pembangunan Anda",
+    quickAction: "AKSI CEPAT",
+    newProject: "Proyek Baru",
+    savedProjects: "DAFTAR PROYEK TERSIMPAN",
+    noSavedProjects: "Belum ada proyek yang disimpan",
+
+    // Material Calculator
+    materialCalcTitle: "Kalkulator Material",
+    noAssembledProfiles: "Belum ada profil yang dirakit."
   },
   en: {
     // Header & Tooltips
@@ -113,6 +129,7 @@ export const TRANSLATIONS = {
     // Advanced Controls
     advancedControls: "Advanced Controls",
     showGrid: "Show Base Grid",
+    showGridDesc: "Show reference grid lines on the floor",
     gridSize: "Grid Size",
     gridSizeLocked: "Locked (Requires Specialist 1)",
     gridCustomLocked: "Locked (Requires Specialist 6)",
@@ -122,5 +139,20 @@ export const TRANSLATIONS = {
     galleryTitle: "Gallery & Blueprints",
     galleryDesc: "View the best community works or use them as your starting template.",
     uploadDesign: "Upload Design (Earn Pi)",
+    useBlueprint: "Use Blueprint",
+    officialBlueprints: "Official Blueprints",
+    communityUGC: "Community (UGC)",
+
+    // Project Manager
+    projectManagerTitle: "Project Management",
+    projectManagerDesc: "Save and load your construction progress",
+    quickAction: "QUICK ACTION",
+    newProject: "New Project",
+    savedProjects: "SAVED PROJECTS",
+    noSavedProjects: "No saved projects yet",
+
+    // Material Calculator
+    materialCalcTitle: "Material Calculator",
+    noAssembledProfiles: "No profiles assembled yet."
   }
 };

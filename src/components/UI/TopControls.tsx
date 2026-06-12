@@ -33,16 +33,16 @@ export function TopControls() {
       <header className="absolute top-0 left-0 w-full z-50 bg-stone-900/95 border-b border-stone-800 backdrop-blur-md shadow-lg flex flex-wrap lg:flex-nowrap justify-between items-center px-4 py-2 pointer-events-auto">
         
         {/* Left: Logo & Level */}
-        <div className="flex items-center gap-4 lg:gap-6 w-full lg:w-auto justify-between lg:justify-start mb-2 lg:mb-0">
-          <div className="flex items-center gap-3">
-            <img src="/logo2.png" alt="enPIneering Logo" className="h-8 md:h-12 w-auto object-contain drop-shadow-md" />
+        <div className="flex items-center gap-4 lg:gap-6 w-full lg:w-auto justify-between lg:justify-start mb-2 lg:mb-0 overflow-hidden">
+          <div className="flex items-center gap-3 shrink-0">
+            <img src="/logo.png" alt="enPIneering Logo" className="h-10 md:h-14 w-auto object-contain drop-shadow-md" />
             <div className="flex flex-col">
-              <h1 className="text-xl md:text-2xl font-bold text-green-500 drop-shadow-md leading-tight">{t('appTitle')}</h1>
-              <p className="text-xs text-stone-300">{t('appSubtitle')}</p>
+              <h1 className="text-xl md:text-2xl font-bold text-green-500 drop-shadow-md leading-tight truncate">{t('appTitle')}</h1>
+              <p className="text-xs text-stone-300 truncate">{t('appSubtitle')}</p>
             </div>
           </div>
           
-          <div className="block scale-90 origin-right lg:scale-100">
+          <div className="block scale-90 origin-right lg:scale-100 shrink-0 ml-auto lg:ml-0">
             <LevelDisplay className="border-none shadow-none bg-stone-800/50 py-1" />
           </div>
         </div>

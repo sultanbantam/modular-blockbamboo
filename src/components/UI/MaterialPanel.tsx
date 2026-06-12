@@ -1,9 +1,11 @@
 import { useGameStore } from '@/store/useGameStore';
 import { useState } from 'react';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export function MaterialPanel() {
   const blocks = useGameStore((state) => state.blocks);
   const [isOpen, setIsOpen] = useState(false);
+  const { t } = useTranslation();
   
   // Calculate counts
   const counts = blocks.reduce((acc, block) => {
@@ -17,7 +19,7 @@ export function MaterialPanel() {
       <button 
         className={`fixed top-20 right-4 z-40 p-3 rounded-xl shadow-2xl backdrop-blur-md transition-all duration-300 border flex flex-col items-center gap-1 ${isOpen ? 'bg-amber-600 border-amber-500 text-white translate-x-32 opacity-0' : 'bg-stone-900/90 border-stone-700 text-stone-300 hover:text-amber-400 hover:bg-stone-800'}`}
         onClick={() => setIsOpen(!isOpen)}
-        title="Kalkulator Material"
+        title={t('materialCalcTitle')}
       >
         <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
       </button>
@@ -29,7 +31,7 @@ export function MaterialPanel() {
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-bold text-amber-500 flex items-center gap-2">
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
-            Kalkulator Material
+            {t('materialCalcTitle')}
           </h2>
           <button onClick={() => setIsOpen(false)} className="p-2 text-stone-400 hover:text-white bg-stone-800 rounded-lg">
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
@@ -39,7 +41,7 @@ export function MaterialPanel() {
         <div className="flex-1 overflow-y-auto custom-scrollbar pr-2">
           {blocks.length === 0 ? (
             <div className="text-center p-8 bg-stone-800/50 rounded-xl border border-stone-700/50">
-              <p className="text-stone-400 text-sm">Belum ada profil yang dirakit.</p>
+              <p className="text-stone-400 text-sm">{t('noAssembledProfiles')}</p>
             </div>
           ) : (
             <div className="space-y-3">

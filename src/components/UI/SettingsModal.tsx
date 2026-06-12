@@ -30,7 +30,7 @@ export function SettingsModal({ onClose }: { onClose: () => void }) {
           <div className="flex items-center justify-between">
             <div>
               <div className="font-bold text-stone-200">{t('showGrid')}</div>
-              <div className="text-sm text-stone-400">Tampilkan garis grid referensi di lantai</div>
+              <div className="text-sm text-stone-400">{t('showGridDesc')}</div>
             </div>
             <label className="relative inline-flex items-center cursor-pointer">
               <input type="checkbox" checked={showGrid} onChange={(e) => setShowGrid(e.target.checked)} className="sr-only peer" />
