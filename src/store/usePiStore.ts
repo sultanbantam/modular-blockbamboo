@@ -59,7 +59,11 @@ export const usePiStore = create<PiState>((set, get) => ({
       
       if (balanceData.success) {
         set({
-          user: { uid: balanceData.userId || 'bmc_user', username: balanceData.userName || 'Admin' },
+          user: { 
+            uid: balanceData.userId || 'bmc_user', 
+            username: balanceData.userName || 'Pekerja BaMboo',
+            walletAddress: balanceData.walletAddress || ''
+          },
           isAuthenticated: true,
           isAuthenticating: false,
           bmcBalance: balanceData.balance
@@ -105,11 +109,15 @@ export const usePiStore = create<PiState>((set, get) => ({
         const finalBalance = balanceData.success ? balanceData.balance : 0;
 
         set({
-          user: { uid: data.user.id, username: data.user.name },
+          user: { 
+            uid: data.user.id, 
+            username: data.user.name,
+            walletAddress: balanceData.walletAddress || data.user.wallet_address || ''
+          },
           isAuthenticated: true,
           isAuthenticating: false,
           authMethod: 'bamboochain',
-          bmcBalance: finalBalance // Gunakan saldo asli (contoh: 2222.517)
+          bmcBalance: finalBalance
         });
       } else {
         throw new Error(data.message || "SSO Gagal");

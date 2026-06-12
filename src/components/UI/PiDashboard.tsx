@@ -39,7 +39,14 @@ export function PiDashboard({ onClose }: { onClose: () => void }) {
           </div>
           <div>
             <div className="text-stone-200 font-bold">{user?.username || 'Pioneer'}</div>
-            <div className="text-xs text-stone-500 font-mono">{user?.uid?.substring(0, 12)}...</div>
+            {user?.walletAddress ? (
+              <div className="text-xs text-stone-500 font-mono mt-1 flex items-center gap-1 bg-stone-900/50 px-2 py-1 rounded w-fit border border-stone-800">
+                <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                {user.walletAddress.substring(0, 6)}...{user.walletAddress.substring(user.walletAddress.length - 4)}
+              </div>
+            ) : (
+              <div className="text-xs text-stone-500 font-mono">{user?.uid?.substring(0, 12)}...</div>
+            )}
           </div>
         </div>
 
