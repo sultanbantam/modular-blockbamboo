@@ -1,8 +1,10 @@
 import { create } from 'zustand';
 
-interface PiUser {
+export interface PiUser {
   uid: string;
   username: string;
+  walletAddress?: string;
+  accessToken?: string;
 }
 
 interface PiState {
