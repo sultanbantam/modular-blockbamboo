@@ -327,9 +327,25 @@ export const useGameStore = create<GameState>()(
 
     let newXp = state.xp + gainedXP;
     let newLevel = state.level;
+    let leveledUp = false;
     while (newXp >= 100) {
       newXp -= 100;
       newLevel += 1;
+      leveledUp = true;
+    }
+
+    if (leveledUp) {
+      const token = localStorage.getItem('bmc_access_token');
+      if (token) {
+        fetch('https://www.bamboochain.id/api/game/reward', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ newLevel })
+        }).catch(err => console.error("Failed to claim level up reward:", err));
+      }
     }
 
     const newBlock = { ...block, id: Math.random().toString(36).substr(2, 9) } as BlockData;
