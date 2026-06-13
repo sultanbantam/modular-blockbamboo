@@ -57,11 +57,22 @@ class YjsManager {
       this.provider.disconnect();
       this.provider.destroy();
     }
+    if (this.wsProvider) {
+      this.wsProvider.disconnect();
+      this.wsProvider.destroy();
+      this.wsProvider = null;
+    }
 
     this.roomId = roomId;
 
-    // Use default signaling servers (y-webrtc-eu.fly.dev)
+    // Use default signaling servers (y-webrtc-eu.fly.dev) and extra fallbacks
     this.provider = new WebrtcProvider(roomId, this.ydoc, {
+      signaling: [
+        'wss://signaling.yjs.dev',
+        'wss://y-webrtc-signaling-eu.herokuapp.com',
+        'wss://y-webrtc-signaling-us.herokuapp.com',
+        'wss://y-webrtc-eu.fly.dev'
+      ],
       peerOpts: {
         iceServers: [
           { urls: 'stun:stun.l.google.com:19302' },
@@ -81,20 +92,51 @@ class YjsManager {
       }
     });
 
-    this.awareness = this.provider.awareness;
+    // Connect to WebSocket provider for highly reliable sync fallback/primary
+    const wsServerUrl = process.env.NEXT_PUBLIC_WS_SERVER || 'wss://demos.yjs.dev';
+    this.wsProvider = new WebsocketProvider(wsServerUrl, roomId, this.ydoc);
 
-    // Set local state
-    this.awareness.setLocalStateField('user', {
+    // Keep reference to primary awareness (WebSocket is more reliable, fallback to WebRTC)
+    this.awareness = this.wsProvider.awareness;
+
+    const localUser = {
       name: username,
       color: color,
       cursor: null // {x, y, z} for 3D cursor later
-    });
+    };
 
-    // Listen to presence changes
-    this.awareness.on('change', () => {
-      const states = Array.from(this.awareness.getStates().values());
-      useGameStore.getState().setOnlineUsers(states.map((s: any) => s.user).filter(Boolean));
-    });
+    // Set local state on both providers to allow peer discovery across both protocols
+    if (this.provider) {
+      this.provider.awareness.setLocalStateField('user', localUser);
+    }
+    if (this.wsProvider) {
+      this.wsProvider.awareness.setLocalStateField('user', localUser);
+    }
+
+    // Combine online users from both providers
+    const handleAwarenessChange = () => {
+      const allUsersMap = new Map<string, any>();
+      
+      if (this.provider) {
+        Array.from(this.provider.awareness.getStates().values()).forEach((s: any) => {
+          if (s.user) allUsersMap.set(s.user.name, s.user);
+        });
+      }
+      if (this.wsProvider) {
+        Array.from(this.wsProvider.awareness.getStates().values()).forEach((s: any) => {
+          if (s.user) allUsersMap.set(s.user.name, s.user);
+        });
+      }
+      
+      useGameStore.getState().setOnlineUsers(Array.from(allUsersMap.values()));
+    };
+
+    if (this.provider) {
+      this.provider.awareness.on('change', handleAwarenessChange);
+    }
+    if (this.wsProvider) {
+      this.wsProvider.awareness.on('change', handleAwarenessChange);
+    }
   }
 
   public disconnect() {
@@ -103,7 +145,13 @@ class YjsManager {
       this.provider.destroy();
       this.provider = null;
     }
+    if (this.wsProvider) {
+      this.wsProvider.disconnect();
+      this.wsProvider.destroy();
+      this.wsProvider = null;
+    }
     this.roomId = null;
+    this.awareness = null;
   }
 
   // Helpers to mutate Yjs Array from Zustand
@@ -145,11 +193,23 @@ class YjsManager {
   }
   
   public updateCursor(position: [number, number, number] | null) {
-    if (this.awareness) {
-      this.awareness.setLocalStateField('user', {
-        ...this.awareness.getLocalState().user,
-        cursor: position
-      });
+    if (this.provider) {
+      const user = this.provider.awareness.getLocalState()?.user;
+      if (user) {
+        this.provider.awareness.setLocalStateField('user', {
+          ...user,
+          cursor: position
+        });
+      }
+    }
+    if (this.wsProvider) {
+      const user = this.wsProvider.awareness.getLocalState()?.user;
+      if (user) {
+        this.wsProvider.awareness.setLocalStateField('user', {
+          ...user,
+          cursor: position
+        });
+      }
     }
   }
 

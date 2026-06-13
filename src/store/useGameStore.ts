@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { yjsManager } from './yjsProvider';
+import { usePiStore } from './usePiStore';
 
 export type BlockType = 
   | 'c30' | 'c60' 
@@ -177,11 +178,19 @@ export const useGameStore = create<GameState>()(
         return { prizePoolBalance: newBalance };
       }),
       setChatMessages: (messages) => set((state) => {
-        // If the new messages array is larger, increment unread count
         const diff = messages.length - state.chatMessages.length;
+        if (diff > 0) {
+          const newMessages = messages.slice(state.chatMessages.length);
+          const currentUser = usePiStore.getState().user?.username || 'Pioneer';
+          const remoteMessages = newMessages.filter(m => m.sender !== currentUser);
+          return {
+            chatMessages: messages,
+            unreadChatCount: state.unreadChatCount + remoteMessages.length
+          };
+        }
         return { 
           chatMessages: messages, 
-          unreadChatCount: diff > 0 ? state.unreadChatCount + diff : state.unreadChatCount 
+          unreadChatCount: state.unreadChatCount 
         };
       }),
       clearUnreadChat: () => set({ unreadChatCount: 0 }),
