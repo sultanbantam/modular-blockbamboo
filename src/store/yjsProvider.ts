@@ -25,7 +25,7 @@ class YjsManager {
     this.yBlocks.observeDeep((events, transaction) => {
       if (transaction.local) return;
       this.isApplyingRemote = true;
-      const blocksArray = this.yBlocks.toArray() as BlockData[];
+      const blocksArray = this.yBlocks.toArray().map((yMap: any) => yMap.toJSON()) as BlockData[];
       useGameStore.getState().setBlocksFromRemote(blocksArray);
       this.isApplyingRemote = false;
     });
