@@ -93,7 +93,7 @@ class YjsManager {
     });
 
     // Connect to WebSocket provider for highly reliable sync fallback/primary
-    const wsServerUrl = process.env.NEXT_PUBLIC_WS_SERVER || 'wss://demos.yjs.dev';
+    const wsServerUrl = process.env.NEXT_PUBLIC_WS_SERVER || 'wss://demos.yjs.dev/ws';
     this.wsProvider = new WebsocketProvider(wsServerUrl, roomId, this.ydoc);
 
     // Keep reference to primary awareness (WebSocket is more reliable, fallback to WebRTC)
