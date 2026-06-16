@@ -3,8 +3,13 @@ import { useGameStore } from '../../store/useGameStore';
 import { Volume2, VolumeX, Play, Pause, SkipForward, SkipBack, Music } from 'lucide-react';
 
 const TRACKS = [
-  { id: 1, title: 'Relaxing Bamboo', src: '/music/bgm1.mp3' },
-  { id: 2, title: 'Village Morning', src: '/music/bgm2.mp3' }
+  { id: 1, title: 'Bambu Asik Joged', src: '/music/bambuasikjoged.mp3' },
+  { id: 2, title: 'Bambu Nusa', src: '/music/bambunusa.mp3' },
+  { id: 3, title: 'Banten Kidul', src: '/music/bantenkidul.mp3' },
+  { id: 4, title: 'Cibarani', src: '/music/cibarani.mp3' },
+  { id: 5, title: 'Gunung Liman', src: '/music/gunungliman.mp3' },
+  { id: 6, title: 'Perpubi', src: '/music/perpubi.mp3' },
+  { id: 7, title: 'Perpubi 2', src: '/music/perpubi2.mp3' },
 ];
 
 export const MusicPlayer = () => {
