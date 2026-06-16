@@ -82,6 +82,10 @@ interface GameState {
   setCurrentTrackIndex: (index: number) => void;
   setMusicVolume: (volume: number) => void;
   
+  // Base Model URL
+  baseModelUrl: string | null;
+  setBaseModelUrl: (url: string | null) => void;
+
   // Multiplayer
   roomId: string | null;
   onlineUsers: { name: string; color: string; cursor: [number, number, number] | null }[];
@@ -178,6 +182,10 @@ export const useGameStore = create<GameState>()(
       setCurrentTrackIndex: (index: number) => set({ currentTrackIndex: index }),
       setMusicVolume: (volume: number) => set({ musicVolume: volume }),
       
+      // Base Model URL for Sabumi catalog
+      baseModelUrl: null,
+      setBaseModelUrl: (url: string | null) => set({ baseModelUrl: url }),
+
       // Multiplayer
       roomId: null,
       onlineUsers: [],

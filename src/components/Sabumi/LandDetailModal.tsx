@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSabumiStore, LandData, LandType } from '../../store/useSabumiStore';
 import { Building2, X, Hammer, Sprout, ShoppingBag, Pickaxe, Coins } from 'lucide-react';
+import { HouseCatalogModal } from './HouseCatalogModal';
 
 interface LandDetailModalProps {
   landId: string;
@@ -9,10 +10,11 @@ interface LandDetailModalProps {
 }
 
 export const LandDetailModal: React.FC<LandDetailModalProps> = ({ landId, onClose, onEnterConstructor }) => {
-  const { lands, buildOnLand, startProduction, harvestProduction, gold, bmcInternal } = useSabumiStore();
+  const { lands, buildOnLand, startProduction, harvestProduction } = useSabumiStore();
   const land = lands.find(l => l.id === landId);
   
   const [timeLeft, setTimeLeft] = useState(0);
+  const [showCatalog, setShowCatalog] = useState(false);
 
   useEffect(() => {
     if (!land || !land.productionEndTime) return;
@@ -30,7 +32,11 @@ export const LandDetailModal: React.FC<LandDetailModalProps> = ({ landId, onClos
   if (!land) return null;
 
   const handleBuild = (type: LandType) => {
-    buildOnLand(landId, type);
+    if (type === 'housing') {
+      setShowCatalog(true);
+    } else {
+      buildOnLand(landId, type);
+    }
   };
 
   const handlePlant = () => {
@@ -40,6 +46,18 @@ export const LandDetailModal: React.FC<LandDetailModalProps> = ({ landId, onClos
   const handleHarvest = () => {
     harvestProduction(landId, 5); // yield 5 bamboo
   };
+
+  if (showCatalog) {
+    return (
+      <HouseCatalogModal 
+        landId={landId} 
+        onClose={() => {
+          setShowCatalog(false);
+          onClose(); // Close both modals after selection
+        }} 
+      />
+    );
+  }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
@@ -111,7 +129,15 @@ export const LandDetailModal: React.FC<LandDetailModalProps> = ({ landId, onClos
         {land.status === 'built' && land.type === 'housing' && (
           <div className="space-y-3 text-center">
             <p className="text-stone-300">Rumah Anda sudah berdiri.</p>
-            <button onClick={onEnterConstructor} className="w-full p-3 bg-blue-600 hover:bg-blue-500 rounded text-white font-bold flex items-center justify-center gap-2">
+            <button 
+              onClick={() => {
+                import('../../store/useGameStore').then(({ useGameStore }) => {
+                  useGameStore.getState().setBaseModelUrl(land.modelUrl || null);
+                  onEnterConstructor();
+                });
+              }} 
+              className="w-full p-3 bg-blue-600 hover:bg-blue-500 rounded text-white font-bold flex items-center justify-center gap-2"
+            >
               <Hammer /> Buka 3D Constructor
             </button>
           </div>

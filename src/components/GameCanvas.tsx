@@ -21,8 +21,28 @@ const GRID_SIZE = 200; // 200 * 0.09m = 18m grid
 // Ephemeral state for magnetic snapping shared between useFrame and keydown listener
 let sharedClosestPair: { active: THREE.Mesh, static: THREE.Mesh, distance: number, delta: THREE.Vector3 } | null = null;
 
+class ErrorBoundary extends React.Component<{ fallback: React.ReactNode, children: React.ReactNode }, { hasError: boolean }> {
+  constructor(props: any) {
+    super(props);
+    this.state = { hasError: false };
+  }
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+  render() {
+    if (this.state.hasError) return this.props.fallback;
+    return this.props.children;
+  }
+}
+
+function BaseModel({ url }: { url: string }) {
+  const { useGLTF } = require('@react-three/drei');
+  const { scene } = useGLTF(url);
+  return <primitive object={scene} />;
+}
+
 function Scene() {
-  const { blocks, selectedBlockType, rotationIndex, customRotation, flipAxis, draggingId, editingId, transformMode, hoverPos, cameraView, setCameraView, showGrid, gridSize, saveHistory, addBlock, updateBlockPosition, updateBlockRotation, setDraggingId, setEditingId, setHoverPos, setContextMenu, isPanMode, triggerSnapCount, onlineUsers, roomId } = useGameStore();
+  const { blocks, selectedBlockType, rotationIndex, customRotation, flipAxis, draggingId, editingId, transformMode, hoverPos, cameraView, setCameraView, showGrid, gridSize, saveHistory, addBlock, updateBlockPosition, updateBlockRotation, setDraggingId, setEditingId, setHoverPos, setContextMenu, isPanMode, triggerSnapCount, onlineUsers, roomId, baseModelUrl } = useGameStore();
 
   const [activeGroup, setActiveGroup] = useState<THREE.Group | null>(null);
   const orbitRef = useRef<any>(null);
@@ -229,6 +249,19 @@ function Scene() {
       <ambientLight intensity={0.5} />
       <directionalLight position={[10, 10, 5]} intensity={1} castShadow />
       <Environment preset="forest" />
+
+      {baseModelUrl && (
+        <ErrorBoundary fallback={
+          <mesh position={[0, 1, 0]}>
+            <boxGeometry args={[2, 2, 2]} />
+            <meshStandardMaterial color="orange" />
+          </mesh>
+        }>
+          <React.Suspense fallback={null}>
+            <BaseModel url={baseModelUrl} />
+          </React.Suspense>
+        </ErrorBoundary>
+      )}
 
       {/* Invisible global plane to catch pointer events while dragging outside ground */}
       {draggingId && (

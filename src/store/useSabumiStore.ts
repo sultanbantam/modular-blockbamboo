@@ -14,6 +14,7 @@ export interface LandData {
   status: LandStatus;
   productionEndTime?: number; // timestamp
   currentProduct?: string;
+  modelUrl?: string; // URL for GLB model
 }
 
 export interface InventoryItem {
@@ -40,7 +41,7 @@ interface SabumiState {
   // Actions
   initializePlayer: () => void;
   claimInitialLand: () => void;
-  buildOnLand: (landId: string, type: LandType) => void;
+  buildOnLand: (landId: string, type: LandType, modelUrl?: string) => void;
   finishConstruction: (landId: string) => void;
   startProduction: (landId: string, productCode: string, durationMs: number) => void;
   harvestProduction: (landId: string, yieldQuantity: number) => void;
@@ -101,7 +102,7 @@ export const useSabumiStore = create<SabumiState>()(
         };
       }),
       
-      buildOnLand: (landId, type) => set((state) => {
+      buildOnLand: (landId, type, modelUrl) => set((state) => {
         const cost = 100; // Mock cost
         if (state.gold < cost) {
           alert("Gold tidak cukup!");
@@ -112,7 +113,7 @@ export const useSabumiStore = create<SabumiState>()(
           gold: state.gold - cost,
           lands: state.lands.map(l => 
             l.id === landId 
-              ? { ...l, type, status: 'constructing', productionEndTime: Date.now() + 5000 } // 5 sec build time
+              ? { ...l, type, status: 'constructing', productionEndTime: Date.now() + 5000, modelUrl } // 5 sec build time
               : l
           )
         };
