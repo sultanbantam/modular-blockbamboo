@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSabumiStore, LandData, LandType } from '../../../store/useSabumiStore';
+import { useSabumiStore, LandData, LandType } from '../../store/useSabumiStore';
 import { Building2, X, Hammer, Sprout, ShoppingBag, Pickaxe, Coins } from 'lucide-react';
 
 interface LandDetailModalProps {
