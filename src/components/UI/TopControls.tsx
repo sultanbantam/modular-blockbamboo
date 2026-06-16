@@ -90,8 +90,19 @@ export function TopControls() {
           </div>
 
           {/* History Group */}
-          {/* Project Management Button */}
+          {/* Project Management & Sabumi Button */}
           <div className="flex gap-1 border-r border-stone-700 pr-2 mr-2">
+            <button 
+              onClick={() => {
+                import('@/store/useSabumiStore').then(({ useSabumiStore }) => {
+                  useSabumiStore.getState().setIsSabumiMode(true);
+                });
+              }}
+              className="px-3 py-1 bg-green-800 rounded hover:bg-green-700 font-bold flex items-center gap-1 text-sm text-green-100"
+              title="Masuk ke Desa SABUMI"
+            >
+              <span>🏡</span> SABUMI
+            </button>
             <button 
               onClick={() => setShowProjectModal(true)}
               className="px-3 py-1 bg-stone-800 rounded hover:bg-stone-700 font-bold flex items-center gap-1 text-sm text-stone-200"

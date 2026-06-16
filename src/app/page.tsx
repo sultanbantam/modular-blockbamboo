@@ -15,11 +15,15 @@ import { usePiStore } from "@/store/usePiStore";
 import { TutorialModal } from "@/components/UI/TutorialModal";
 import { GalleryModal } from "@/components/UI/GalleryModal";
 import { ConstructionTimer } from "@/components/UI/ConstructionTimer";
+import { MusicPlayer } from "@/components/UI/MusicPlayer";
+import { SabumiMap } from "@/components/Sabumi/SabumiMap";
 import { useGameStore } from "@/store/useGameStore";
+import { useSabumiStore } from "@/store/useSabumiStore";
 import { useState, useEffect } from "react";
 
 export default function Home() {
   const isAuthenticated = usePiStore((state) => state.isAuthenticated);
+  const { isSabumiMode, setIsSabumiMode } = useSabumiStore();
   const [showGallery, setShowGallery] = useState(false);
 
   useEffect(() => {
@@ -34,6 +38,18 @@ export default function Home() {
 
   if (!isAuthenticated) {
     return <PiAuth />;
+  }
+
+  if (isSabumiMode) {
+    return (
+      <main className="flex min-h-screen flex-col bg-stone-900 text-stone-200 overflow-hidden relative">
+        <SabumiMap 
+          onExit={() => setIsSabumiMode(false)} 
+          onEnterConstructor={() => setIsSabumiMode(false)} 
+        />
+        <MusicPlayer />
+      </main>
+    );
   }
 
   return (
@@ -54,6 +70,7 @@ export default function Home() {
       <ActionBar />
       <InGameChat />
       <TutorialModal />
+      <MusicPlayer />
       {showGallery && <GalleryModal onClose={() => setShowGallery(false)} />}
     </main>
   );

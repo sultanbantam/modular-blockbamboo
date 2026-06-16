@@ -74,6 +74,14 @@ interface GameState {
   language: 'id' | 'en';
   setLanguage: (lang: 'id' | 'en') => void;
   
+  // Music Player
+  isMusicPlaying: boolean;
+  currentTrackIndex: number;
+  musicVolume: number;
+  setIsMusicPlaying: (isPlaying: boolean) => void;
+  setCurrentTrackIndex: (index: number) => void;
+  setMusicVolume: (volume: number) => void;
+  
   // Multiplayer
   roomId: string | null;
   onlineUsers: { name: string; color: string; cursor: [number, number, number] | null }[];
@@ -161,6 +169,14 @@ export const useGameStore = create<GameState>()(
       
       language: 'id',
       setLanguage: (lang) => set({ language: lang }),
+
+      // Music Player
+      isMusicPlaying: false,
+      currentTrackIndex: 0,
+      musicVolume: 0.5,
+      setIsMusicPlaying: (isPlaying: boolean) => set({ isMusicPlaying: isPlaying }),
+      setCurrentTrackIndex: (index: number) => set({ currentTrackIndex: index }),
+      setMusicVolume: (volume: number) => set({ musicVolume: volume }),
       
       // Multiplayer
       roomId: null,
