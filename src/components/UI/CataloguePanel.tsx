@@ -2,6 +2,7 @@ import { useGameStore, BlockType } from '@/store/useGameStore';
 import { usePiStore } from '@/store/usePiStore';
 import { useState } from 'react';
 import { useTranslation } from '@/hooks/useTranslation';
+import { HouseViewerModal } from './HouseViewerModal';
 
 const COMPONENTS: { type: BlockType; name: string; price?: number }[] = [
   { type: 's30', name: 'Profil S 30cm' },
@@ -44,9 +45,15 @@ export function CataloguePanel() {
   const [purchasing, setPurchasing] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'components' | 'houses'>('components');
+  const [viewingHouse, setViewingHouse] = useState<{type: BlockType, name: string} | null>(null);
   const { t } = useTranslation();
 
   const handleProfileClick = (profile: typeof COMPONENTS[0]) => {
+    if (activeTab === 'houses') {
+      setViewingHouse({ type: profile.type, name: profile.name });
+      return;
+    }
+
     if (!profile.price || unlockedProfiles.includes(profile.type)) {
       setSelectedBlockType(profile.type);
       // Auto close on mobile after selection
@@ -175,6 +182,14 @@ export function CataloguePanel() {
         </button>
       </div>
       </div>
+
+      {viewingHouse && (
+        <HouseViewerModal 
+          type={viewingHouse.type} 
+          name={viewingHouse.name} 
+          onClose={() => setViewingHouse(null)} 
+        />
+      )}
     </>
   );
 }
