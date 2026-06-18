@@ -28,13 +28,7 @@ const COMPONENTS: { type: BlockType; name: string; price?: number }[] = [
   { type: 'atap', name: 'Atap', price: 2 },
 ];
 
-const HOUSES: { type: BlockType; name: string; price?: number }[] = [
-  { type: 'rmh', name: 'Rumah Basic' },
-  { type: 'rmh1', name: 'Rumah Tipe 1' },
-  { type: 'rmh2', name: 'Rumah Tipe 2' },
-  { type: 'rmh3', name: 'Rumah Tipe 3' },
-  { type: 'rmh4', name: 'Rumah Tipe 4' },
-  { type: 'rmh5', name: 'Rumah Tipe 5' },
+const HOUSES: { type: BlockType; name: string }[] = [
   { type: 'rtb', name: 'Rumah Tumbuh' },
   { type: 'RBK21', name: 'Rumah RBK21' },
 ];

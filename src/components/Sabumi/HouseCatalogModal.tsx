@@ -18,12 +18,6 @@ interface HouseCatalogModalProps {
 }
 
 const CATALOG_ITEMS = [
-  { id: 'rmh', name: 'Rumah Basic', price: 100, modelUrl: '/models/rmh.glb' },
-  { id: 'rmh1', name: 'Rumah Tipe 1', price: 200, modelUrl: '/models/rmh1.glb' },
-  { id: 'rmh2', name: 'Rumah Tipe 2', price: 300, modelUrl: '/models/rmh2.glb' },
-  { id: 'rmh3', name: 'Rumah Tipe 3', price: 400, modelUrl: '/models/rmh3.glb' },
-  { id: 'rmh4', name: 'Rumah Tipe 4', price: 500, modelUrl: '/models/rmh4.glb' },
-  { id: 'rmh5', name: 'Rumah Tipe 5', price: 600, modelUrl: '/models/rmh5.glb' },
   { id: 'rtb', name: 'Rumah Tumbuh', price: 700, modelUrl: '/models/rtb.glb' },
   { id: 'RBK21', name: 'Rumah RBK21', price: 800, modelUrl: '/models/RBK21.glb' },
 ];

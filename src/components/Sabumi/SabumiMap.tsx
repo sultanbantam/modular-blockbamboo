@@ -1,8 +1,77 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import { useSabumiStore, LandData } from '../../store/useSabumiStore';
 import { LandDetailModal } from './LandDetailModal';
 import { MarketMenu } from './MarketMenu';
-import { Sprout, Home, ShoppingBag, Pickaxe } from 'lucide-react';
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls, Environment, useGLTF, Text } from '@react-three/drei';
+import { ModelBlock } from '../ModelBlock';
+
+// --- Sabumi Base House Model ---
+function SabumiHouseModel({ url, scale }: { url: string, scale: number }) {
+  const { scene } = useGLTF(url);
+  const clonedScene = React.useMemo(() => scene.clone(), [url, scene]);
+  return <primitive object={clonedScene} position={[0, -0.5, 0]} scale={scale} />;
+}
+
+// --- 3D Land Tile ---
+const LandTile = ({ land, onSelect }: { land: LandData, onSelect: () => void }) => {
+  // Center grid at 0,0, tile spacing = 15 units
+  const posX = (land.x - 2) * 15;
+  const posZ = (land.y - 2) * 15;
+
+  let color = '#292524'; // stone-800
+  if (land.status === 'constructing') color = '#854d0e'; // yellow-800
+  if (land.type === 'housing') color = '#1e3a8a'; // blue-900
+  if (land.type === 'farm') color = land.status === 'producing' ? '#166534' : '#064e3b';
+  if (land.type === 'market') color = '#78350f'; // amber-900
+
+  let label = `Kavling ${land.x},${land.y}`;
+  if (land.status === 'empty') label = 'Lahan Kosong';
+  if (land.type === 'market') label = 'Pasar';
+  if (land.type === 'farm') label = 'Kebun';
+
+  return (
+    <group position={[posX, 0, posZ]}>
+      {/* The Land Plane */}
+      <mesh onClick={(e) => { e.stopPropagation(); onSelect(); }} receiveShadow>
+        <boxGeometry args={[14, 0.5, 14]} />
+        <meshStandardMaterial color={color} />
+      </mesh>
+
+      {/* Floating Label */}
+      <Text 
+        position={[0, 0.3, 0]} 
+        rotation={[-Math.PI / 2, 0, 0]} 
+        fontSize={1.5} 
+        color={land.status === 'empty' ? '#a8a29e' : 'white'} 
+        anchorX="center" 
+        anchorY="middle"
+      >
+        {label}
+      </Text>
+
+      {/* Render the Base House Model if built */}
+      {(land.status === 'built' || land.status === 'producing') && land.type === 'housing' && land.modelUrl && (
+        <Suspense fallback={null}>
+          <SabumiHouseModel url={land.modelUrl} scale={land.modelScale || 1} />
+        </Suspense>
+      )}
+
+      {/* Render the Custom Blocks built in the Constructor */}
+      {land.customBlocks && land.customBlocks.map(block => (
+        <group key={block.id} position={block.position} rotation={block.rotation}>
+          <ModelBlock 
+            type={block.type} 
+            position={[0,0,0]} 
+            rotation={[0,0,0]} 
+            scale={block.scale}
+            blockId={block.id}
+          />
+        </group>
+      ))}
+    </group>
+  );
+};
 
 export const SabumiMap = ({ onExit, onEnterConstructor }: { onExit: () => void, onEnterConstructor: () => void }) => {
   const { lands, gold, bmcInternal, inventory, claimInitialLand } = useSabumiStore();
@@ -12,25 +81,6 @@ export const SabumiMap = ({ onExit, onEnterConstructor }: { onExit: () => void, 
   React.useEffect(() => {
     claimInitialLand();
   }, [claimInitialLand]);
-
-  const getLandColor = (land: LandData) => {
-    if (land.status === 'constructing') return 'bg-yellow-800 border-yellow-600';
-    if (land.type === 'housing') return 'bg-blue-900 border-blue-600';
-    if (land.type === 'farm') {
-      if (land.status === 'producing') return 'bg-green-800 border-green-500';
-      return 'bg-emerald-900 border-emerald-700';
-    }
-    if (land.type === 'market') return 'bg-amber-900 border-amber-600';
-    return 'bg-stone-800 border-stone-700 hover:bg-stone-700';
-  };
-
-  const getLandIcon = (land: LandData) => {
-    if (land.status === 'constructing') return <Pickaxe size={20} className="text-yellow-500" />;
-    if (land.type === 'housing') return <Home size={20} className="text-blue-400" />;
-    if (land.type === 'farm') return <Sprout size={20} className="text-green-400" />;
-    if (land.type === 'market') return <ShoppingBag size={20} className="text-amber-400" />;
-    return null;
-  };
 
   return (
     <div className="absolute inset-0 bg-stone-900 flex flex-col items-center justify-center">
@@ -57,21 +107,31 @@ export const SabumiMap = ({ onExit, onEnterConstructor }: { onExit: () => void, 
         </button>
       </div>
 
-      {/* Iso-like Map Grid */}
-      <div className="relative transform rotate-x-60 rotate-z-45 scale-125 mt-10 transition-transform duration-500">
-        <div className="grid grid-cols-5 gap-1 p-4">
+      {/* 3D Map Canvas */}
+      <div className="absolute inset-0 z-0">
+        <Canvas shadows camera={{ position: [0, 40, 50], fov: 45 }}>
+          <color attach="background" args={['#1c1917']} /> {/* stone-900 */}
+          <ambientLight intensity={0.5} />
+          <directionalLight position={[20, 40, 20]} intensity={1} castShadow />
+          <Environment preset="city" />
+
+          {/* Render all lands */}
           {lands.map((land) => (
-            <div
-              key={land.id}
-              onClick={() => setSelectedLandId(land.id)}
-              className={`w-16 h-16 border-2 flex items-center justify-center cursor-pointer transition-colors shadow-sm rounded-sm ${getLandColor(land)}`}
-            >
-              <div className="transform -rotate-z-45 -rotate-x-60 drop-shadow-md">
-                {getLandIcon(land)}
-              </div>
-            </div>
+            <LandTile 
+              key={land.id} 
+              land={land} 
+              onSelect={() => setSelectedLandId(land.id)} 
+            />
           ))}
-        </div>
+
+          <OrbitControls 
+            makeDefault
+            target={[0, 0, 0]}
+            maxPolarAngle={Math.PI / 2.5} // Prevent camera from going under ground
+            minDistance={20}
+            maxDistance={150}
+          />
+        </Canvas>
       </div>
 
       {selectedLandId && (

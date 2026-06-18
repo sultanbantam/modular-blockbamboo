@@ -83,6 +83,10 @@ interface GameState {
   setCurrentTrackIndex: (index: number) => void;
   setMusicVolume: (volume: number) => void;
   
+  // Sabumi Integration
+  activeSabumiLandId: string | null;
+  setActiveSabumiLandId: (id: string | null) => void;
+  
   // Base Model URL
   baseModelUrl: string | null;
   baseModelScale: number;
@@ -184,6 +188,10 @@ export const useGameStore = create<GameState>()(
       setIsMusicPlaying: (isPlaying: boolean) => set({ isMusicPlaying: isPlaying }),
       setCurrentTrackIndex: (index: number) => set({ currentTrackIndex: index }),
       setMusicVolume: (volume: number) => set({ musicVolume: volume }),
+      
+      // Sabumi Integration
+      activeSabumiLandId: null,
+      setActiveSabumiLandId: (id: string | null) => set({ activeSabumiLandId: id }),
       
       // Base Model URL for Sabumi catalog
       baseModelUrl: null,

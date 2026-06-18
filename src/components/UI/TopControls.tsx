@@ -21,7 +21,8 @@ export function TopControls() {
     undo, redo, pastBlocks, futureBlocks,
     showHelpers, setShowHelpers,
     setCameraView, level, roomId, onlineUsers,
-    language, setLanguage
+    language, setLanguage,
+    activeSabumiLandId, blocks, setActiveSabumiLandId
   } = useGameStore();
 
   const { t } = useTranslation();
@@ -92,17 +93,33 @@ export function TopControls() {
           {/* History Group */}
           {/* Project Management & Sabumi Button */}
           <div className="flex gap-1 border-r border-stone-700 pr-2 mr-2">
-            <button 
-              onClick={() => {
-                import('@/store/useSabumiStore').then(({ useSabumiStore }) => {
-                  useSabumiStore.getState().setIsSabumiMode(true);
-                });
-              }}
-              className="px-3 py-1 bg-green-800 rounded hover:bg-green-700 font-bold flex items-center gap-1 text-sm text-green-100"
-              title="Masuk ke Desa SABUMI"
-            >
-              <span>🏡</span> SABUMI
-            </button>
+            {activeSabumiLandId ? (
+              <button 
+                onClick={() => {
+                  import('@/store/useSabumiStore').then(({ useSabumiStore }) => {
+                    useSabumiStore.getState().saveCustomBlocksToLand(activeSabumiLandId, blocks);
+                    setActiveSabumiLandId(null);
+                    useSabumiStore.getState().setIsSabumiMode(true);
+                  });
+                }}
+                className="px-3 py-1 bg-yellow-600 rounded hover:bg-yellow-500 font-bold flex items-center gap-1 text-sm text-yellow-100 shadow-[0_0_10px_rgba(202,138,4,0.5)] border border-yellow-400"
+                title="Simpan & Kembali ke Sabumi"
+              >
+                <span>💾</span> Simpan ke Sabumi
+              </button>
+            ) : (
+              <button 
+                onClick={() => {
+                  import('@/store/useSabumiStore').then(({ useSabumiStore }) => {
+                    useSabumiStore.getState().setIsSabumiMode(true);
+                  });
+                }}
+                className="px-3 py-1 bg-green-800 rounded hover:bg-green-700 font-bold flex items-center gap-1 text-sm text-green-100"
+                title="Masuk ke Desa SABUMI"
+              >
+                <span>🏡</span> SABUMI
+              </button>
+            )}
             <button 
               onClick={() => setShowProjectModal(true)}
               className="px-3 py-1 bg-stone-800 rounded hover:bg-stone-700 font-bold flex items-center gap-1 text-sm text-stone-200"

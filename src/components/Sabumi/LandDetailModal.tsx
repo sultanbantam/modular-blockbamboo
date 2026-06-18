@@ -135,6 +135,8 @@ export const LandDetailModal: React.FC<LandDetailModalProps> = ({ landId, onClos
                   const state = useGameStore.getState();
                   state.setBaseModelUrl(land.modelUrl || null);
                   state.setBaseModelScale(land.modelScale || 1);
+                  state.setActiveSabumiLandId(land.id);
+                  state.setBlocksFromRemote(land.customBlocks || []);
                   onEnterConstructor();
                 });
               }} 

@@ -16,6 +16,7 @@ export interface LandData {
   currentProduct?: string;
   modelUrl?: string; // URL for GLB model
   modelScale?: number;
+  customBlocks?: any[]; // Stores custom bamboo blocks built on this land
 }
 
 export interface InventoryItem {
@@ -46,6 +47,7 @@ interface SabumiState {
   finishConstruction: (landId: string) => void;
   startProduction: (landId: string, productCode: string, durationMs: number) => void;
   harvestProduction: (landId: string, yieldQuantity: number) => void;
+  saveCustomBlocksToLand: (landId: string, blocks: any[]) => void;
   sellItem: (productCode: string, quantity: number, pricePerUnit: number) => void;
   buyItem: (productCode: string, quantity: number, pricePerUnit: number) => void;
 }
