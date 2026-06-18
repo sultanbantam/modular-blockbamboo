@@ -47,13 +47,12 @@ export function CataloguePanel() {
   const { t } = useTranslation();
 
   const handleProfileClick = (profile: typeof COMPONENTS[0]) => {
-    if (unlockedProfiles.includes(profile.type)) {
+    if (!profile.price || unlockedProfiles.includes(profile.type)) {
       setSelectedBlockType(profile.type);
       // Auto close on mobile after selection
       if (window.innerWidth < 768) setIsOpen(false);
     } else {
       // Trigger Purchase
-      if (!profile.price) return;
       setPurchasing(profile.type);
       purchaseProfile(
         profile.type,
@@ -137,7 +136,7 @@ export function CataloguePanel() {
 
       <div className="flex-1 min-h-0 overflow-y-auto space-y-2 pr-2 pb-8 custom-scrollbar touch-pan-y overscroll-contain">
         {(activeTab === 'components' ? COMPONENTS : HOUSES).map((profile) => {
-          const isUnlocked = unlockedProfiles.includes(profile.type);
+          const isUnlocked = !profile.price || unlockedProfiles.includes(profile.type);
           const isSelected = selectedBlockType === profile.type;
           
           return (
