@@ -85,7 +85,9 @@ interface GameState {
   
   // Base Model URL
   baseModelUrl: string | null;
+  baseModelScale: number;
   setBaseModelUrl: (url: string | null) => void;
+  setBaseModelScale: (scale: number) => void;
 
   // Multiplayer
   roomId: string | null;
@@ -185,7 +187,9 @@ export const useGameStore = create<GameState>()(
       
       // Base Model URL for Sabumi catalog
       baseModelUrl: null,
+      baseModelScale: 1,
       setBaseModelUrl: (url: string | null) => set({ baseModelUrl: url }),
+      setBaseModelScale: (scale: number) => set({ baseModelScale: scale }),
 
       // Multiplayer
       roomId: null,

@@ -5,11 +5,11 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Center, useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
 
-function SabumiPreviewModel({ url }: { url: string }) {
+function SabumiPreviewModel({ url, scale }: { url: string, scale: number }) {
   const { scene } = useGLTF(url);
   const clonedScene = React.useMemo(() => scene.clone(), [url, scene]);
 
-  return <primitive object={clonedScene} position={[0, -0.5, 0]} />;
+  return <primitive object={clonedScene} position={[0, -0.5, 0]} scale={scale} />;
 }
 
 interface HouseCatalogModalProps {
@@ -31,11 +31,12 @@ const CATALOG_ITEMS = [
 export const HouseCatalogModal: React.FC<HouseCatalogModalProps> = ({ landId, onClose }) => {
   const { gold, buildOnLand } = useSabumiStore();
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [scaleMultiplier, setScaleMultiplier] = useState(1);
 
   const selectedItem = CATALOG_ITEMS[selectedIndex];
 
   const handleBuild = () => {
-    buildOnLand(landId, 'housing', selectedItem.modelUrl);
+    buildOnLand(landId, 'housing', selectedItem.modelUrl, scaleMultiplier);
     onClose();
   };
 
@@ -59,7 +60,7 @@ export const HouseCatalogModal: React.FC<HouseCatalogModalProps> = ({ landId, on
                 <meshStandardMaterial color={selectedIndex === 0 ? "orange" : selectedIndex === 1 ? "lightblue" : "lightgreen"} />
               </mesh>
             }>
-              <SabumiPreviewModel url={selectedItem.modelUrl} />
+              <SabumiPreviewModel url={selectedItem.modelUrl} scale={scaleMultiplier} />
             </Suspense>
             
             <OrbitControls makeDefault autoRotate autoRotateSpeed={2.0} target={[0, 0, 0]} />
@@ -95,6 +96,20 @@ export const HouseCatalogModal: React.FC<HouseCatalogModalProps> = ({ landId, on
           </div>
 
           <div className="border-t border-stone-700 pt-4 mt-auto">
+            <div className="flex justify-between items-center mb-2">
+              <span className="text-stone-400 text-sm">Ukuran Asli:</span>
+              <select 
+                value={scaleMultiplier} 
+                onChange={(e) => setScaleMultiplier(Number(e.target.value))}
+                className="bg-stone-800 text-white p-1 rounded border border-stone-700 text-sm w-32"
+              >
+                <option value={1000}>Sangat Kecil (x1000)</option>
+                <option value={100}>Kecil (x100)</option>
+                <option value={1}>Meter (Normal)</option>
+                <option value={0.01}>Sentimeter (x0.01)</option>
+                <option value={0.001}>Milimeter (x0.001)</option>
+              </select>
+            </div>
             <div className="flex justify-between items-center mb-4">
               <span className="text-stone-400">Total Biaya:</span>
               <span className="text-2xl font-bold text-yellow-400">{selectedItem.price} G</span>

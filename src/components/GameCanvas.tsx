@@ -35,14 +35,14 @@ class ErrorBoundary extends React.Component<{ fallback: React.ReactNode, childre
   }
 }
 
-function BaseModel({ url }: { url: string }) {
+function BaseModel({ url, scale }: { url: string, scale: number }) {
   const { useGLTF } = require('@react-three/drei');
   const { scene } = useGLTF(url);
-  return <primitive object={scene} />;
+  return <primitive object={scene} scale={scale} />;
 }
 
 function Scene() {
-  const { blocks, selectedBlockType, rotationIndex, customRotation, flipAxis, draggingId, editingId, transformMode, hoverPos, cameraView, setCameraView, showGrid, gridSize, saveHistory, addBlock, updateBlockPosition, updateBlockRotation, setDraggingId, setEditingId, setHoverPos, setContextMenu, isPanMode, triggerSnapCount, onlineUsers, roomId, baseModelUrl } = useGameStore();
+  const { blocks, selectedBlockType, rotationIndex, customRotation, flipAxis, draggingId, editingId, transformMode, hoverPos, cameraView, setCameraView, showGrid, gridSize, saveHistory, addBlock, updateBlockPosition, updateBlockRotation, setDraggingId, setEditingId, setHoverPos, setContextMenu, isPanMode, triggerSnapCount, onlineUsers, roomId, baseModelUrl, baseModelScale } = useGameStore();
 
   const [activeGroup, setActiveGroup] = useState<THREE.Group | null>(null);
   const orbitRef = useRef<any>(null);
@@ -258,7 +258,7 @@ function Scene() {
           </mesh>
         }>
           <React.Suspense fallback={null}>
-            <BaseModel url={baseModelUrl} />
+            <BaseModel url={baseModelUrl} scale={baseModelScale} />
           </React.Suspense>
         </ErrorBoundary>
       )}

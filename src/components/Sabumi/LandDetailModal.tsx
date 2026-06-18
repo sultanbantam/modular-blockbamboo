@@ -132,7 +132,9 @@ export const LandDetailModal: React.FC<LandDetailModalProps> = ({ landId, onClos
             <button 
               onClick={() => {
                 import('../../store/useGameStore').then(({ useGameStore }) => {
-                  useGameStore.getState().setBaseModelUrl(land.modelUrl || null);
+                  const state = useGameStore.getState();
+                  state.setBaseModelUrl(land.modelUrl || null);
+                  state.setBaseModelScale(land.modelScale || 1);
                   onEnterConstructor();
                 });
               }} 

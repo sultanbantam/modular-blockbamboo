@@ -10,18 +10,21 @@ interface HouseViewerModalProps {
   onClose: () => void;
 }
 
-function HouseModel({ type }: { type: BlockType }) {
+function HouseModel({ type, scale }: { type: BlockType, scale: number }) {
   const { scene } = useGLTF(`/models/${type}.glb`);
   const clonedScene = React.useMemo(() => scene.clone(), [scene]);
 
-  return <primitive object={clonedScene} position={[0, -0.5, 0]} />;
+  return <primitive object={clonedScene} position={[0, -0.5, 0]} scale={scale} />;
 }
 
 export function HouseViewerModal({ type, name, onClose }: HouseViewerModalProps) {
   const setBaseModelUrl = useGameStore(state => state.setBaseModelUrl);
+  const setBaseModelScale = useGameStore(state => state.setBaseModelScale);
+  const [scaleMultiplier, setScaleMultiplier] = useState(1);
 
   const handleUseAsBaseModel = () => {
     setBaseModelUrl(`/models/${type}.glb`);
+    setBaseModelScale(scaleMultiplier);
     alert(`${name} telah dipasang sebagai Model Dasar (Template) di area kerja Anda.`);
     onClose();
   };
@@ -43,15 +46,29 @@ export function HouseViewerModal({ type, name, onClose }: HouseViewerModalProps)
             <directionalLight position={[10, 20, 10]} intensity={1.5} castShadow />
             <Environment preset="city" />
             <Suspense fallback={null}>
-              <HouseModel type={type} />
+              <HouseModel type={type} scale={scaleMultiplier} />
             </Suspense>
             <OrbitControls makeDefault autoRotate autoRotateSpeed={1.0} target={[0, 0, 0]} />
           </Canvas>
         </div>
         
         <div className="p-4 bg-stone-900 border-t border-stone-800 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-stone-400 text-sm">Gunakan mouse (klik & geser) untuk memutar, scroll untuk zoom in/out.</p>
-          <div className="flex gap-2">
+          <div className="flex items-center gap-2">
+            <span className="text-stone-400 text-sm">Ukuran Asli:</span>
+            <select 
+              value={scaleMultiplier} 
+              onChange={(e) => setScaleMultiplier(Number(e.target.value))}
+              className="bg-stone-800 text-white p-1.5 rounded border border-stone-700 text-sm"
+            >
+              <option value={1000}>Sangat Kecil (x1000)</option>
+              <option value={100}>Kecil (x100)</option>
+              <option value={1}>Meter (Normal)</option>
+              <option value={0.01}>Sentimeter (x0.01)</option>
+              <option value={0.001}>Milimeter (x0.001)</option>
+            </select>
+          </div>
+          <p className="text-stone-400 text-xs hidden lg:block">Gunakan mouse (klik & geser) untuk memutar, scroll untuk zoom in/out.</p>
+          <div className="flex gap-2 w-full md:w-auto">
             <button onClick={handleUseAsBaseModel} className="px-6 py-2 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-lg transition-colors">
               Gunakan sebagai Template Kerja
             </button>
