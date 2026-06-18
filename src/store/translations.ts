@@ -29,6 +29,8 @@ export const TRANSLATIONS = {
     // Catalogue
     catalogue: "Katalog",
     catalogueTitle: "Katalog Profil",
+    componentsTab: "Komponen Dasar",
+    housesTab: "Template Rumah",
     freeCursor: "Kursor Bebas",
     freeCursorDesc: "Navigasi layar (Aman)",
     buying: "Membeli...",
@@ -112,6 +114,8 @@ export const TRANSLATIONS = {
     // Catalogue
     catalogue: "Catalogue",
     catalogueTitle: "Profile Catalogue",
+    componentsTab: "Basic Components",
+    housesTab: "House Templates",
     freeCursor: "Free Cursor",
     freeCursorDesc: "Navigate screen (Safe)",
     buying: "Buying...",

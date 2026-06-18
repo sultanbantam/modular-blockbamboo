@@ -14,7 +14,8 @@ export type BlockType =
   | 'plus30' | 'plus60' 
   | 's30' | 's60' 
   | 't30' | 't60'
-  | 'alas' | 'atap' | 'alaskode';
+  | 'alas' | 'atap' | 'alaskode'
+  | 'rmh' | 'rmh1' | 'rmh2' | 'rmh3' | 'rmh4' | 'rmh5' | 'rtb' | 'RBK21';
 
 export interface BlockData {
   id: string;
@@ -160,7 +161,7 @@ export const useGameStore = create<GameState>()(
       hoverPos: null,
       contextMenu: { visible: false, x: 0, y: 0, blockId: null },
       
-      unlockedProfiles: ['c30', 'c60', 'girder', 'j', 'j2', 'j3', 'l30', 'l60', 'p', 'p2', 'pj', 'plus30', 'plus60', 's30', 's60', 't30', 't60'], // basic free profiles
+      unlockedProfiles: ['c30', 'c60', 'girder', 'j', 'j2', 'j3', 'l30', 'l60', 'p', 'p2', 'pj', 'plus30', 'plus60', 's30', 's60', 't30', 't60', 'rmh', 'rmh1', 'rmh2', 'rmh3', 'rmh4', 'rmh5', 'rtb', 'RBK21'], // basic free profiles
       piBalance: 0,
       level: 0,
       xp: 0,

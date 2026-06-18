@@ -3,7 +3,7 @@ import { usePiStore } from '@/store/usePiStore';
 import { useState } from 'react';
 import { useTranslation } from '@/hooks/useTranslation';
 
-const PROFILES: { type: BlockType; name: string; price?: number }[] = [
+const COMPONENTS: { type: BlockType; name: string; price?: number }[] = [
   { type: 's30', name: 'Profil S 30cm' },
   { type: 's60', name: 'Profil S 60cm' },
   { type: 'plus30', name: 'Profil Plus 30cm' },
@@ -27,14 +27,26 @@ const PROFILES: { type: BlockType; name: string; price?: number }[] = [
   { type: 'atap', name: 'Atap', price: 2 },
 ];
 
+const HOUSES: { type: BlockType; name: string; price?: number }[] = [
+  { type: 'rmh', name: 'Rumah Basic' },
+  { type: 'rmh1', name: 'Rumah Tipe 1' },
+  { type: 'rmh2', name: 'Rumah Tipe 2' },
+  { type: 'rmh3', name: 'Rumah Tipe 3' },
+  { type: 'rmh4', name: 'Rumah Tipe 4' },
+  { type: 'rmh5', name: 'Rumah Tipe 5' },
+  { type: 'rtb', name: 'Rumah Tumbuh' },
+  { type: 'RBK21', name: 'Rumah RBK21' },
+];
+
 export function CataloguePanel() {
   const { selectedBlockType, setSelectedBlockType, clearBlocks, unlockedProfiles, unlockProfile } = useGameStore();
   const { purchaseProfile } = usePiStore();
   const [purchasing, setPurchasing] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<'components' | 'houses'>('components');
   const { t } = useTranslation();
 
-  const handleProfileClick = (profile: typeof PROFILES[0]) => {
+  const handleProfileClick = (profile: typeof COMPONENTS[0]) => {
     if (unlockedProfiles.includes(profile.type)) {
       setSelectedBlockType(profile.type);
       // Auto close on mobile after selection
@@ -83,6 +95,29 @@ export function CataloguePanel() {
           </button>
         </div>
       
+      <div className="flex space-x-2 mb-4 shrink-0">
+        <button
+          onClick={() => setActiveTab('components')}
+          className={`flex-1 py-2 text-sm font-bold rounded-lg transition-all border ${
+            activeTab === 'components'
+              ? 'bg-amber-600 border-amber-500 text-white shadow-md'
+              : 'bg-stone-800 border-stone-700 text-stone-400 hover:bg-stone-700 hover:text-stone-200'
+          }`}
+        >
+          {t('componentsTab') || 'Komponen'}
+        </button>
+        <button
+          onClick={() => setActiveTab('houses')}
+          className={`flex-1 py-2 text-sm font-bold rounded-lg transition-all border ${
+            activeTab === 'houses'
+              ? 'bg-amber-600 border-amber-500 text-white shadow-md'
+              : 'bg-stone-800 border-stone-700 text-stone-400 hover:bg-stone-700 hover:text-stone-200'
+          }`}
+        >
+          {t('housesTab') || 'Rumah'}
+        </button>
+      </div>
+
       <div className="mb-4 shrink-0">
         <button
           onClick={() => setSelectedBlockType(null)}
@@ -101,7 +136,7 @@ export function CataloguePanel() {
       </div>
 
       <div className="flex-1 min-h-0 overflow-y-auto space-y-2 pr-2 pb-8 custom-scrollbar touch-pan-y overscroll-contain">
-        {PROFILES.map((profile) => {
+        {(activeTab === 'components' ? COMPONENTS : HOUSES).map((profile) => {
           const isUnlocked = unlockedProfiles.includes(profile.type);
           const isSelected = selectedBlockType === profile.type;
           
