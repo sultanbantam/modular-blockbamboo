@@ -1,8 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import { useSabumiStore } from '../../store/useSabumiStore';
 import { X, Building2, Hammer } from 'lucide-react';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Stage } from '@react-three/drei';
+import { OrbitControls, Center, useGLTF } from '@react-three/drei';
+import * as THREE from 'three';
+
+function SabumiPreviewModel({ url }: { url: string }) {
+  const { scene } = useGLTF(url);
+  const clonedScene = React.useMemo(() => scene.clone(), [url, scene]);
+  const [scale, setScale] = React.useState(1);
+
+  React.useEffect(() => {
+    const box = new THREE.Box3().setFromObject(clonedScene);
+    const size = box.getSize(new THREE.Vector3());
+    const maxDim = Math.max(size.x, size.y, size.z);
+    if (maxDim > 0) {
+      setScale(10 / maxDim);
+    }
+  }, [clonedScene]);
+
+  return (
+    <Center>
+      <primitive object={clonedScene} scale={scale} />
+    </Center>
+  );
+}
 
 interface HouseCatalogModalProps {
   landId: string;
@@ -10,9 +32,14 @@ interface HouseCatalogModalProps {
 }
 
 const CATALOG_ITEMS = [
-  { id: 'house_a', name: 'Rumah Tipe A', price: 100, modelUrl: '/models/rumah_tipe_a.glb' },
-  { id: 'house_b', name: 'Rumah Tipe B', price: 200, modelUrl: '/models/rumah_tipe_b.glb' },
-  { id: 'house_c', name: 'Rumah Tipe C', price: 300, modelUrl: '/models/rumah_tipe_c.glb' },
+  { id: 'rmh', name: 'Rumah Basic', price: 100, modelUrl: '/models/rmh.glb' },
+  { id: 'rmh1', name: 'Rumah Tipe 1', price: 200, modelUrl: '/models/rmh1.glb' },
+  { id: 'rmh2', name: 'Rumah Tipe 2', price: 300, modelUrl: '/models/rmh2.glb' },
+  { id: 'rmh3', name: 'Rumah Tipe 3', price: 400, modelUrl: '/models/rmh3.glb' },
+  { id: 'rmh4', name: 'Rumah Tipe 4', price: 500, modelUrl: '/models/rmh4.glb' },
+  { id: 'rmh5', name: 'Rumah Tipe 5', price: 600, modelUrl: '/models/rmh5.glb' },
+  { id: 'rtb', name: 'Rumah Tumbuh', price: 700, modelUrl: '/models/rtb.glb' },
+  { id: 'RBK21', name: 'Rumah RBK21', price: 800, modelUrl: '/models/RBK21.glb' },
 ];
 
 export const HouseCatalogModal: React.FC<HouseCatalogModalProps> = ({ landId, onClose }) => {
@@ -40,19 +67,20 @@ export const HouseCatalogModal: React.FC<HouseCatalogModalProps> = ({ landId, on
             <ambientLight intensity={0.5} />
             <directionalLight position={[10, 10, 5]} intensity={1} castShadow />
             
-            <Stage environment="city" intensity={0.5}>
-              {/* Fallback box for preview when GLB is not available */}
+            <Suspense fallback={
               <mesh castShadow receiveShadow>
                 <boxGeometry args={[2, 2, 2]} />
                 <meshStandardMaterial color={selectedIndex === 0 ? "orange" : selectedIndex === 1 ? "lightblue" : "lightgreen"} />
               </mesh>
-            </Stage>
+            }>
+              <SabumiPreviewModel url={selectedItem.modelUrl} />
+            </Suspense>
             
-            <OrbitControls makeDefault autoRotate />
+            <OrbitControls makeDefault autoRotate autoRotateSpeed={2.0} />
           </Canvas>
           <div className="absolute bottom-4 left-4 right-4 text-center pointer-events-none">
             <p className="text-xs text-stone-500 bg-black/50 inline-block px-2 py-1 rounded">
-              Catatan: Preview menggunakan kotak 3D sederhana hingga file .glb tersedia.
+              Tarik untuk memutar, scroll untuk zoom.
             </p>
           </div>
         </div>
