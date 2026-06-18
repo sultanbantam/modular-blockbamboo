@@ -8,22 +8,8 @@ import * as THREE from 'three';
 function SabumiPreviewModel({ url }: { url: string }) {
   const { scene } = useGLTF(url);
   const clonedScene = React.useMemo(() => scene.clone(), [url, scene]);
-  const [scale, setScale] = React.useState(1);
 
-  React.useEffect(() => {
-    const box = new THREE.Box3().setFromObject(clonedScene);
-    const size = box.getSize(new THREE.Vector3());
-    const maxDim = Math.max(size.x, size.y, size.z);
-    if (maxDim > 0) {
-      setScale(10 / maxDim);
-    }
-  }, [clonedScene]);
-
-  return (
-    <Center>
-      <primitive object={clonedScene} scale={scale} />
-    </Center>
-  );
+  return <primitive object={clonedScene} position={[0, -0.5, 0]} />;
 }
 
 interface HouseCatalogModalProps {
@@ -76,7 +62,7 @@ export const HouseCatalogModal: React.FC<HouseCatalogModalProps> = ({ landId, on
               <SabumiPreviewModel url={selectedItem.modelUrl} />
             </Suspense>
             
-            <OrbitControls makeDefault autoRotate autoRotateSpeed={2.0} />
+            <OrbitControls makeDefault autoRotate autoRotateSpeed={2.0} target={[0, 0, 0]} />
           </Canvas>
           <div className="absolute bottom-4 left-4 right-4 text-center pointer-events-none">
             <p className="text-xs text-stone-500 bg-black/50 inline-block px-2 py-1 rounded">

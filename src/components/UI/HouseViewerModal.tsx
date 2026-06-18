@@ -1,6 +1,6 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Center, useGLTF, Environment } from '@react-three/drei';
+import { OrbitControls, useGLTF, Environment } from '@react-three/drei';
 import * as THREE from 'three';
 import { BlockType, useGameStore } from '@/store/useGameStore';
 
@@ -13,24 +13,8 @@ interface HouseViewerModalProps {
 function HouseModel({ type }: { type: BlockType }) {
   const { scene } = useGLTF(`/models/${type}.glb`);
   const clonedScene = React.useMemo(() => scene.clone(), [scene]);
-  const [scale, setScale] = React.useState(1);
 
-  React.useEffect(() => {
-    // Calculate bounding box of the cloned scene
-    const box = new THREE.Box3().setFromObject(clonedScene);
-    const size = box.getSize(new THREE.Vector3());
-    const maxDim = Math.max(size.x, size.y, size.z);
-    if (maxDim > 0) {
-      // Scale down (or up) so the largest dimension is 15 units
-      setScale(15 / maxDim);
-    }
-  }, [clonedScene]);
-
-  return (
-    <Center>
-      <primitive object={clonedScene} scale={scale} />
-    </Center>
-  );
+  return <primitive object={clonedScene} position={[0, -0.5, 0]} />;
 }
 
 export function HouseViewerModal({ type, name, onClose }: HouseViewerModalProps) {
@@ -53,7 +37,7 @@ export function HouseViewerModal({ type, name, onClose }: HouseViewerModalProps)
         </div>
 
         <div className="flex-1 w-full h-full bg-stone-950 mt-[73px]">
-          <Canvas shadows camera={{ position: [15, 10, 15], fov: 50 }}>
+          <Canvas shadows camera={{ position: [25, 15, 25], fov: 50 }}>
             <color attach="background" args={['#1a1a1a']} />
             <ambientLight intensity={0.6} />
             <directionalLight position={[10, 20, 10]} intensity={1.5} castShadow />
@@ -61,7 +45,7 @@ export function HouseViewerModal({ type, name, onClose }: HouseViewerModalProps)
             <Suspense fallback={null}>
               <HouseModel type={type} />
             </Suspense>
-            <OrbitControls makeDefault autoRotate autoRotateSpeed={1.0} />
+            <OrbitControls makeDefault autoRotate autoRotateSpeed={1.0} target={[0, 0, 0]} />
           </Canvas>
         </div>
         
