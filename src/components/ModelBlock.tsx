@@ -35,6 +35,9 @@ function calculateBounds(scene: THREE.Group | THREE.Object3D) {
 
 export function ModelBlock({ type, position, rotation, scale = [1,1,1], blockId }: { type: BlockType, position: [number, number, number], rotation: [number, number, number], scale?: [number, number, number], blockId?: string }) {
   const { scene } = useGLTF(`/models/${type}.glb`);
+  const isHouseModel = ['rmh', 'rmh1', 'rmh2', 'rmh3', 'rmh4', 'rmh5', 'rtb', 'RBK21'].includes(type);
+  const m = isHouseModel ? 0.001 : 1;
+  const finalScale = [scale[0] * m, scale[1] * m, scale[2] * m] as [number, number, number];
   const clonedScene = useMemo(() => scene.clone(), [scene]);
   const showHelpers = useGameStore(state => state.showHelpers);
   
@@ -70,7 +73,7 @@ export function ModelBlock({ type, position, rotation, scale = [1,1,1], blockId 
   }, [scene, size, height, offset]);
 
   return (
-    <group position={position} rotation={rotation} scale={scale}>
+    <group position={position} rotation={rotation} scale={finalScale}>
       <group position={offset}>
         <primitive object={clonedScene} />
       </group>
@@ -96,6 +99,9 @@ export function ModelBlock({ type, position, rotation, scale = [1,1,1], blockId 
 
 export function PreviewBlock({ type, position, rotation, scale = [1,1,1], blockId = 'preview' }: { type: BlockType, position: [number, number, number], rotation: [number, number, number], scale?: [number, number, number], blockId?: string }) {
   const { scene } = useGLTF(`/models/${type}.glb`);
+  const isHouseModel = ['rmh', 'rmh1', 'rmh2', 'rmh3', 'rmh4', 'rmh5', 'rtb', 'RBK21'].includes(type);
+  const m = isHouseModel ? 0.001 : 1;
+  const finalScale = [scale[0] * m, scale[1] * m, scale[2] * m] as [number, number, number];
   const showHelpers = useGameStore(state => state.showHelpers);
   const clonedScene = useMemo(() => {
     const clone = scene.clone();
@@ -152,7 +158,7 @@ export function PreviewBlock({ type, position, rotation, scale = [1,1,1], blockI
   }, [scene, size, height, offset]);
 
   return (
-    <group position={position} rotation={rotation} scale={scale}>
+    <group position={position} rotation={rotation} scale={finalScale}>
       <group position={offset}>
         <primitive object={clonedScene} />
       </group>
