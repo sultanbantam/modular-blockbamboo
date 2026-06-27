@@ -6,15 +6,15 @@ import { HouseCatalogModal } from './HouseCatalogModal';
 interface LandDetailModalProps {
   landId: string;
   onClose: () => void;
+  onEnterBuildMode?: () => void;
   onEnterConstructor: () => void; // Call this when building to open the 3D mode
 }
 
-export const LandDetailModal: React.FC<LandDetailModalProps> = ({ landId, onClose, onEnterConstructor }) => {
+export const LandDetailModal: React.FC<LandDetailModalProps> = ({ landId, onClose, onEnterBuildMode, onEnterConstructor }) => {
   const { lands, buildOnLand, startProduction, harvestProduction } = useSabumiStore();
   const land = lands.find(l => l.id === landId);
   
   const [timeLeft, setTimeLeft] = useState(0);
-  const [showCatalog, setShowCatalog] = useState(false);
 
   useEffect(() => {
     if (!land || !land.productionEndTime) return;
@@ -32,11 +32,7 @@ export const LandDetailModal: React.FC<LandDetailModalProps> = ({ landId, onClos
   if (!land) return null;
 
   const handleBuild = (type: LandType) => {
-    if (type === 'housing') {
-      setShowCatalog(true);
-    } else {
-      buildOnLand(landId, type);
-    }
+    buildOnLand(landId, type);
   };
 
   const handlePlant = () => {
@@ -46,18 +42,6 @@ export const LandDetailModal: React.FC<LandDetailModalProps> = ({ landId, onClos
   const handleHarvest = () => {
     harvestProduction(landId, 5); // yield 5 bamboo
   };
-
-  if (showCatalog) {
-    return (
-      <HouseCatalogModal 
-        landId={landId} 
-        onClose={() => {
-          setShowCatalog(false);
-          onClose(); // Close both modals after selection
-        }} 
-      />
-    );
-  }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
@@ -77,19 +61,19 @@ export const LandDetailModal: React.FC<LandDetailModalProps> = ({ landId, onClos
 
         {land.status === 'empty' && (
           <div className="space-y-3">
-            <p className="text-sm text-stone-400">Lahan ini masih kosong. Apa yang ingin Anda bangun?</p>
+            <p className="text-sm text-stone-400">Lahan ini masih kosong. Beli kavling ini untuk mulai membangun.</p>
             <div className="grid grid-cols-2 gap-2">
               <button onClick={() => handleBuild('housing')} className="p-3 bg-stone-700 hover:bg-stone-600 rounded flex flex-col items-center gap-1">
                 <Hammer size={20} className="text-blue-400" />
-                <span>Rumah (100G)</span>
+                <span>Kavling Rumah (100G)</span>
               </button>
               <button onClick={() => handleBuild('farm')} className="p-3 bg-stone-700 hover:bg-stone-600 rounded flex flex-col items-center gap-1">
                 <Sprout size={20} className="text-green-400" />
-                <span>Kebun (100G)</span>
+                <span>Kavling Kebun (100G)</span>
               </button>
               <button onClick={() => handleBuild('market')} className="p-3 bg-stone-700 hover:bg-stone-600 rounded flex flex-col items-center gap-1 col-span-2">
                 <ShoppingBag size={20} className="text-yellow-400" />
-                <span>Pasar (100G)</span>
+                <span>Lapak Pasar (100G)</span>
               </button>
             </div>
           </div>
@@ -98,7 +82,7 @@ export const LandDetailModal: React.FC<LandDetailModalProps> = ({ landId, onClos
         {land.status === 'constructing' && (
           <div className="text-center py-4">
             <Pickaxe size={32} className="mx-auto mb-2 text-yellow-500 animate-bounce" />
-            <p>Sedang membangun {land.type}...</p>
+            <p>Sedang membangun fondasi kavling...</p>
             <p className="text-xl font-bold mt-2">{(timeLeft / 1000).toFixed(1)}s</p>
           </div>
         )}
@@ -108,6 +92,9 @@ export const LandDetailModal: React.FC<LandDetailModalProps> = ({ landId, onClos
             <p>Kebun siap ditanami!</p>
             <button onClick={handlePlant} className="w-full p-3 bg-green-600 hover:bg-green-500 rounded text-white font-bold flex items-center justify-center gap-2">
               <Sprout /> Tanam Bibit Bambu
+            </button>
+            <button onClick={onEnterBuildMode} className="w-full p-3 bg-blue-600 hover:bg-blue-500 rounded text-white font-bold flex items-center justify-center gap-2">
+              <Hammer /> Tata Letak Objek
             </button>
           </div>
         )}
@@ -128,21 +115,27 @@ export const LandDetailModal: React.FC<LandDetailModalProps> = ({ landId, onClos
 
         {land.status === 'built' && land.type === 'housing' && (
           <div className="space-y-3 text-center">
-            <p className="text-stone-300">Rumah Anda sudah berdiri.</p>
+            <p className="text-stone-300">Kavling rumah siap ditata.</p>
+            <button 
+              onClick={onEnterBuildMode} 
+              className="w-full p-3 bg-green-600 hover:bg-green-500 rounded text-white font-bold flex items-center justify-center gap-2"
+            >
+              <Hammer /> Masuk Mode Tata Letak (City Builder)
+            </button>
+            <div className="text-xs text-stone-500 mt-2 flex items-center justify-center gap-1">
+              Atau jika ingin merakit balok bambu:
+            </div>
             <button 
               onClick={() => {
                 import('../../store/useGameStore').then(({ useGameStore }) => {
                   const state = useGameStore.getState();
-                  state.setBaseModelUrl(land.modelUrl || null);
-                  state.setBaseModelScale(land.modelScale || 1);
                   state.setActiveSabumiLandId(land.id);
-                  state.setBlocksFromRemote(land.customBlocks || []);
                   onEnterConstructor();
                 });
               }} 
-              className="w-full p-3 bg-blue-600 hover:bg-blue-500 rounded text-white font-bold flex items-center justify-center gap-2"
+              className="w-full p-2 bg-stone-700 hover:bg-stone-600 rounded text-stone-300 font-bold flex items-center justify-center gap-2"
             >
-              <Hammer /> Buka 3D Constructor
+               Buka 3D Constructor (Klasik)
             </button>
           </div>
         )}

@@ -5,6 +5,15 @@ import { usePiStore } from './usePiStore';
 export type LandStatus = 'empty' | 'constructing' | 'built' | 'active' | 'producing' | 'ready_to_harvest';
 export type LandType = 'none' | 'housing' | 'farm' | 'fishery' | 'livestock' | 'market';
 
+export interface PlacedObject {
+  id: string;
+  type: string; // 'house', 'fence', 'farm', 'pool', 'barn', 'custom'
+  modelUrl: string;
+  position: [number, number, number];
+  rotation: [number, number, number];
+  scale: [number, number, number];
+}
+
 export interface LandData {
   id: string;
   x: number;
@@ -14,9 +23,10 @@ export interface LandData {
   status: LandStatus;
   productionEndTime?: number; // timestamp
   currentProduct?: string;
-  modelUrl?: string; // URL for GLB model
+  modelUrl?: string; // URL for GLB model (Main building, legacy)
   modelScale?: number;
-  customBlocks?: any[]; // Stores custom bamboo blocks built on this land
+  customBlocks?: any[]; // Stores custom bamboo blocks built on this land (legacy)
+  placedObjects: PlacedObject[]; // Objects placed via Sabumi Builder
 }
 
 export interface InventoryItem {
@@ -48,6 +58,9 @@ interface SabumiState {
   startProduction: (landId: string, productCode: string, durationMs: number) => void;
   harvestProduction: (landId: string, yieldQuantity: number) => void;
   saveCustomBlocksToLand: (landId: string, blocks: any[]) => void;
+  addPlacedObject: (landId: string, object: Omit<PlacedObject, 'id'>) => void;
+  updatePlacedObject: (landId: string, objectId: string, updates: Partial<PlacedObject>) => void;
+  removePlacedObject: (landId: string, objectId: string) => void;
   sellItem: (productCode: string, quantity: number, pricePerUnit: number) => void;
   buyItem: (productCode: string, quantity: number, pricePerUnit: number) => void;
 }
@@ -64,6 +77,7 @@ const generateInitialLands = (): LandData[] => {
         type: 'none',
         level: 0,
         status: 'empty',
+        placedObjects: [],
       });
     }
   }
@@ -188,6 +202,36 @@ export const useSabumiStore = create<SabumiState>()(
           )
         };
       }),
+
+      addPlacedObject: (landId, object) => set((state) => ({
+        lands: state.lands.map(l =>
+          l.id === landId
+            ? { ...l, placedObjects: [...(l.placedObjects || []), { ...object, id: Math.random().toString(36).substr(2, 9) }] }
+            : l
+        )
+      })),
+
+      updatePlacedObject: (landId, objectId, updates) => set((state) => ({
+        lands: state.lands.map(l =>
+          l.id === landId
+            ? {
+                ...l,
+                placedObjects: l.placedObjects.map(obj => obj.id === objectId ? { ...obj, ...updates } : obj)
+              }
+            : l
+        )
+      })),
+
+      removePlacedObject: (landId, objectId) => set((state) => ({
+        lands: state.lands.map(l =>
+          l.id === landId
+            ? {
+                ...l,
+                placedObjects: l.placedObjects.filter(obj => obj.id !== objectId)
+              }
+            : l
+        )
+      })),
 
       sellItem: (productCode, quantity, pricePerUnit) => set((state) => {
         const item = state.inventory.find(i => i.productCode === productCode);
