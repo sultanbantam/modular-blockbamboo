@@ -69,8 +69,10 @@ const LandTile = ({
   land, 
   onSelect, 
   isBuildMode, 
-  placingItem, 
-  onPlaceObject 
+  placingItem,
+  selectedObjectId,
+  onPlaceObject,
+  onSelectObject
 }: { 
   land: LandData, 
   onSelect: () => void,

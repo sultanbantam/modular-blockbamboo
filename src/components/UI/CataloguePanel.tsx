@@ -28,10 +28,10 @@ const COMPONENTS: { type: BlockType; name: string; price?: number }[] = [
   { type: 'atap', name: 'Atap', price: 2 },
 ];
 
-const HOUSES: { type: BlockType; name: string }[] = [
-  { type: 'rtb', name: 'Rumah Tumbuh' },
-  { type: 'RBK21', name: 'Rumah RBK21' },
-  { type: 'mbb1', name: 'Rumah MBB1' },
+const HOUSES: { type: BlockType; name: string; price?: number }[] = [
+  { type: 'rtb', name: 'Rumah Tumbuh', price: 100 },
+  { type: 'RBK21', name: 'Rumah RBK21', price: 200 },
+  { type: 'mbb1', name: 'Rumah MBB1', price: 300 },
 ];
 
 export function CataloguePanel() {

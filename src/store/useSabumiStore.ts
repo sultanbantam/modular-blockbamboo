@@ -57,7 +57,6 @@ interface SabumiState {
   finishConstruction: (landId: string) => void;
   startProduction: (landId: string, productCode: string, durationMs: number) => void;
   harvestProduction: (landId: string, yieldQuantity: number) => void;
-  saveCustomBlocksToLand: (landId: string, blocks: any[]) => void;
   addPlacedObject: (landId: string, object: Omit<PlacedObject, 'id'>) => void;
   updatePlacedObject: (landId: string, objectId: string, updates: Partial<PlacedObject>) => void;
   removePlacedObject: (landId: string, objectId: string) => void;
