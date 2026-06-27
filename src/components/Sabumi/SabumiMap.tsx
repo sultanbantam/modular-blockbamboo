@@ -16,13 +16,21 @@ function SabumiHouseModel({ url, scale, position, rotation }: { url: string, sca
 }
 
 // --- Dynamic Placed Object ---
-function PlacedObjectRender({ obj }: { obj: PlacedObject }) {
+function PlacedObjectRender({ obj, isSelected, onClick }: { obj: PlacedObject, isSelected: boolean, onClick?: (e: ThreeEvent<MouseEvent>) => void }) {
   // If it's a known GLB model from public/models, render it
   if (obj.modelUrl.endsWith('.glb')) {
     return (
-      <Suspense fallback={null}>
-        <SabumiHouseModel url={obj.modelUrl} scale={obj.scale[0]} position={obj.position} rotation={obj.rotation} />
-      </Suspense>
+      <group onClick={onClick}>
+        <Suspense fallback={null}>
+          <SabumiHouseModel url={obj.modelUrl} scale={obj.scale[0]} position={obj.position} rotation={obj.rotation} />
+        </Suspense>
+        {isSelected && (
+          <mesh position={obj.position}>
+            <boxGeometry args={[4, 4, 4]} />
+            <meshBasicMaterial color="#3b82f6" wireframe />
+          </mesh>
+        )}
+      </group>
     );
   }
   return null;
@@ -68,7 +76,9 @@ const LandTile = ({
   onSelect: () => void,
   isBuildMode: boolean,
   placingItem: string | null,
-  onPlaceObject: (pos: [number,number,number]) => void
+  selectedObjectId: string | null,
+  onPlaceObject: (pos: [number,number,number]) => void,
+  onSelectObject: (id: string) => void
 }) => {
   // Center grid at 0,0, tile spacing = 15 units
   const posX = (land.x - 2) * 15;
@@ -148,7 +158,17 @@ const LandTile = ({
 
       {/* Render Placed Objects */}
       {land.placedObjects && land.placedObjects.map(obj => (
-        <PlacedObjectRender key={obj.id} obj={obj} />
+        <PlacedObjectRender 
+          key={obj.id} 
+          obj={obj} 
+          isSelected={isBuildMode && selectedObjectId === obj.id}
+          onClick={(e) => {
+            if (isBuildMode) {
+              e.stopPropagation();
+              onSelectObject(obj.id);
+            }
+          }}
+        />
       ))}
 
       {/* Render Preview Object */}
@@ -198,6 +218,7 @@ export const SabumiMap = ({ onExit, onEnterConstructor }: { onExit: () => void, 
   const [selectedLandId, setSelectedLandId] = useState<string | null>(null);
   const [buildModeLandId, setBuildModeLandId] = useState<string | null>(null);
   const [placingItem, setPlacingItem] = useState<string | null>(null);
+  const [selectedObjectId, setSelectedObjectId] = useState<string | null>(null);
 
   React.useEffect(() => {
     claimInitialLand();
@@ -214,6 +235,11 @@ export const SabumiMap = ({ onExit, onEnterConstructor }: { onExit: () => void, 
       });
       // Optionally deselect after place: setPlacingItem(null);
     }
+  };
+
+  const handleSelectObject = (objectId: string) => {
+    setSelectedObjectId(objectId);
+    setPlacingItem(null);
   };
 
   const editingLand = buildModeLandId ? lands.find(l => l.id === buildModeLandId) || null : null;
@@ -250,10 +276,16 @@ export const SabumiMap = ({ onExit, onEnterConstructor }: { onExit: () => void, 
         <SabumiBuildUI 
           landId={buildModeLandId} 
           placingItem={placingItem} 
-          setPlacingItem={setPlacingItem} 
+          setPlacingItem={(item) => {
+            setPlacingItem(item);
+            if (item) setSelectedObjectId(null);
+          }} 
+          selectedObjectId={selectedObjectId}
+          setSelectedObjectId={setSelectedObjectId}
           onExit={() => {
             setBuildModeLandId(null);
             setPlacingItem(null);
+            setSelectedObjectId(null);
           }} 
         />
       )}
@@ -291,7 +323,9 @@ export const SabumiMap = ({ onExit, onEnterConstructor }: { onExit: () => void, 
               onSelect={() => setSelectedLandId(land.id)} 
               isBuildMode={buildModeLandId === land.id}
               placingItem={placingItem}
+              selectedObjectId={selectedObjectId}
               onPlaceObject={(pos) => handlePlaceObject(land.id, pos)}
+              onSelectObject={handleSelectObject}
             />
           ))}
 
