@@ -45,7 +45,7 @@ export default function PiAuth() {
           <button
             onClick={() => {
               const clientId = "enpineering";
-              const redirectUri = encodeURIComponent("https://modular-blockbamboo.vercel.app/auth/callback");
+              const redirectUri = encodeURIComponent("https://www.bamboogame.click/auth/callback");
               window.location.href = `https://www.bamboochain.id/authorize?client_id=${clientId}&redirect_uri=${redirectUri}`;
             }}
             disabled={isAuthenticating}
