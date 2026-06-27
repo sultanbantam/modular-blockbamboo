@@ -3,7 +3,7 @@ import { useSabumiStore, LandData } from '../../store/useSabumiStore';
 import { LandDetailModal } from './LandDetailModal';
 import { MarketMenu } from './MarketMenu';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Environment, useGLTF, Text } from '@react-three/drei';
+import { OrbitControls, Environment, useGLTF, Text, Sky } from '@react-three/drei';
 import { ModelBlock } from '../ModelBlock';
 
 // --- Sabumi Base House Model ---
@@ -19,11 +19,11 @@ const LandTile = ({ land, onSelect }: { land: LandData, onSelect: () => void }) 
   const posX = (land.x - 2) * 15;
   const posZ = (land.y - 2) * 15;
 
-  let color = '#292524'; // stone-800
-  if (land.status === 'constructing') color = '#854d0e'; // yellow-800
-  if (land.type === 'housing') color = '#1e3a8a'; // blue-900
-  if (land.type === 'farm') color = land.status === 'producing' ? '#166534' : '#064e3b';
-  if (land.type === 'market') color = '#78350f'; // amber-900
+  let color = '#57534e'; // stone-500 (Empty/Unclaimed)
+  if (land.status === 'constructing') color = '#78350f'; // amber-900 (Dirt)
+  if (land.type === 'housing') color = '#3f6212'; // lime-900 (Claimed residential)
+  if (land.type === 'farm') color = land.status === 'producing' ? '#14532d' : '#166534'; // green-900
+  if (land.type === 'market') color = '#9a3412'; // orange-900 (Market paving)
 
   let label = `Kavling ${land.x},${land.y}`;
   if (land.status === 'empty') label = 'Lahan Kosong';
@@ -32,10 +32,10 @@ const LandTile = ({ land, onSelect }: { land: LandData, onSelect: () => void }) 
 
   return (
     <group position={[posX, 0, posZ]}>
-      {/* The Land Plane */}
-      <mesh onClick={(e) => { e.stopPropagation(); onSelect(); }} receiveShadow>
-        <boxGeometry args={[14, 0.5, 14]} />
-        <meshStandardMaterial color={color} />
+      {/* The Land Plane (Thinner, sits on ground) */}
+      <mesh onClick={(e) => { e.stopPropagation(); onSelect(); }} receiveShadow position={[0, 0.05, 0]}>
+        <boxGeometry args={[14.5, 0.1, 14.5]} />
+        <meshStandardMaterial color={color} roughness={0.9} />
       </mesh>
 
       {/* Floating Label */}
@@ -109,11 +109,28 @@ export const SabumiMap = ({ onExit, onEnterConstructor }: { onExit: () => void, 
 
       {/* 3D Map Canvas */}
       <div className="absolute inset-0 z-0">
-        <Canvas shadows camera={{ position: [0, 40, 50], fov: 45 }}>
-          <color attach="background" args={['#1c1917']} /> {/* stone-900 */}
-          <ambientLight intensity={0.5} />
-          <directionalLight position={[20, 40, 20]} intensity={1} castShadow />
-          <Environment preset="city" />
+        <Canvas shadows camera={{ position: [0, 20, 40], fov: 45 }}>
+          <Sky sunPosition={[100, 20, 100]} turbidity={0.3} rayleigh={0.5} />
+          <ambientLight intensity={0.4} />
+          <directionalLight 
+            position={[50, 50, 50]} 
+            intensity={1.5} 
+            castShadow 
+            shadow-mapSize-width={2048} 
+            shadow-mapSize-height={2048} 
+            shadow-camera-far={200}
+            shadow-camera-left={-50}
+            shadow-camera-right={50}
+            shadow-camera-top={50}
+            shadow-camera-bottom={-50}
+          />
+          <Environment preset="park" />
+          
+          {/* Ground Plane (Rumput Dasar) */}
+          <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.1, 0]} receiveShadow>
+            <planeGeometry args={[500, 500]} />
+            <meshStandardMaterial color="#2d5a27" roughness={1} />
+          </mesh>
 
           {/* Render all lands */}
           {lands.map((land) => (
@@ -127,9 +144,10 @@ export const SabumiMap = ({ onExit, onEnterConstructor }: { onExit: () => void, 
           <OrbitControls 
             makeDefault
             target={[0, 0, 0]}
-            maxPolarAngle={Math.PI / 2.5} // Prevent camera from going under ground
-            minDistance={20}
-            maxDistance={150}
+            maxPolarAngle={Math.PI / 2.1} // Prevent camera from going under ground
+            minPolarAngle={Math.PI / 6}
+            minDistance={10}
+            maxDistance={100}
           />
         </Canvas>
       </div>
