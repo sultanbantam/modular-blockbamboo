@@ -24,6 +24,9 @@ export const LandDetailModal: React.FC<LandDetailModalProps> = ({ landId, onClos
       setTimeLeft(remaining);
       if (remaining === 0) {
         clearInterval(interval);
+        if (land.status === 'constructing') {
+          useSabumiStore.getState().finishConstruction(landId);
+        }
       }
     }, 100);
     return () => clearInterval(interval);
