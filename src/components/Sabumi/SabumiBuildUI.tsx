@@ -24,6 +24,7 @@ export const SabumiBuildUI: React.FC<SabumiBuildUIProps> = ({
 
   const ITEMS = [
     { id: 'mbb1', name: 'Rumah MBB1', icon: <Building2 />, type: 'house' },
+    { id: 'mbb01', name: 'Rumah MBB01', icon: <Building2 />, type: 'house' },
     { id: 'RBK21', name: 'Rumah RBK21', icon: <Building2 />, type: 'house' },
     { id: 'rtb', name: 'Rumah Tumbuh', icon: <Building2 />, type: 'house' },
   ];

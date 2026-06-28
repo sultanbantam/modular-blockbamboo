@@ -21,6 +21,7 @@ const CATALOG_ITEMS = [
   { id: 'rtb', name: 'Rumah Tumbuh', price: 700, modelUrl: '/models/rtb.glb' },
   { id: 'RBK21', name: 'Rumah RBK21', price: 800, modelUrl: '/models/RBK21.glb' },
   { id: 'mbb1', name: 'Rumah MBB1', price: 1000, modelUrl: '/models/mbb1.glb' },
+  { id: 'mbb01', name: 'Rumah MBB01', price: 1000, modelUrl: '/models/mbb01.glb' },
 ];
 
 export const HouseCatalogModal: React.FC<HouseCatalogModalProps> = ({ landId, onClose }) => {
