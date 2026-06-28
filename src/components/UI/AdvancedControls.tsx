@@ -75,7 +75,7 @@ export function AdvancedControls() {
 
       {/* Sliding Drawer */}
       <div 
-        className={`fixed right-0 bottom-0 lg:top-auto h-[50vh] lg:h-[calc(100vh-60px-45vh-20px)] lg:bottom-4 w-full lg:w-72 bg-stone-900/95 border-t lg:border-l lg:border-t-stone-800 border-stone-800 p-6 flex flex-col pointer-events-auto shadow-2xl backdrop-blur-xl z-50 transition-transform duration-300 ease-in-out lg:rounded-l-xl ${isOpen ? 'translate-y-0 lg:translate-x-0' : 'translate-y-full lg:translate-y-0 lg:translate-x-full'}`}
+        className={`fixed right-0 bottom-0 lg:top-auto h-[50vh] lg:h-[45vh] lg:bottom-4 w-full lg:w-72 bg-stone-900/95 border-t lg:border-l lg:border-t-stone-800 border-stone-800 p-6 flex flex-col pointer-events-auto shadow-2xl backdrop-blur-xl z-50 transition-transform duration-300 ease-in-out lg:rounded-l-xl ${isOpen ? 'translate-y-0 lg:translate-x-0' : 'translate-y-full lg:translate-y-0 lg:translate-x-full'}`}
       >
         <div className="flex justify-between items-center mb-4 border-b border-stone-700 pb-2">
           <h3 className="text-md font-bold text-stone-200 flex items-center gap-2">
