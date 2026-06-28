@@ -70,7 +70,7 @@ export function TutorialModal() {
           <ul className="list-disc pl-5 space-y-2 text-sm md:text-base">
             <li>Gunakan fitur <strong>Multiplayer</strong> di menu atas untuk membuat ruangan (Room).</li>
             <li>Bagikan nama Room ke teman Anda. Mereka akan langsung muncul di kanvas Anda secara <em>Real-Time</em>.</li>
-            <li>Gunakan fitur <strong>Kas Proyek / Donasi Pi / Donasi BMC</strong> untuk menggalang dana (*Prize Pool*) bersama tim Anda menggunakan Pi Wallet.</li>
+            <li>Gunakan fitur <strong>Kas Proyek / Donasi Pi / Donasi BMC</strong> untuk menggalang dana (*Prize Pool*) bersama tim Anda menggunakan Pi/BMC Wallet.</li>
             <li>Anda juga bisa mengobrol (Chat) langsung di dalam game.</li>
           </ul>
         </div>
