@@ -31,8 +31,8 @@ const COMPONENTS: { type: BlockType; name: string; price?: number }[] = [
 const HOUSES: { type: BlockType; name: string; price?: number }[] = [
   { type: 'rtb', name: 'Rumah Tumbuh', price: 100 },
   { type: 'RBK21', name: 'Rumah RBK21', price: 200 },
-  { type: 'mbb1', name: 'Rumah MBB1', price: 300 },
-  { type: 'mbb01', name: 'Rumah MBB01', price: 300 },
+  { type: 'mbb1', name: 'Rumah MBB1' },
+  { type: 'mbb01', name: 'Rumah MBB01' },
 ];
 
 export function CataloguePanel() {
