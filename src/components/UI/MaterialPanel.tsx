@@ -26,7 +26,7 @@ export function MaterialPanel() {
 
       {/* Sliding Drawer */}
       <div 
-        className={`fixed right-0 top-[60px] h-[calc(100vh-60px)] w-80 bg-stone-900/95 border-l border-stone-800 p-6 flex flex-col pointer-events-auto shadow-2xl backdrop-blur-xl z-50 transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
+        className={`fixed right-0 top-[60px] h-[45vh] w-80 bg-stone-900/95 border-l border-b border-stone-800 p-6 flex flex-col pointer-events-auto shadow-2xl backdrop-blur-xl z-50 transition-transform duration-300 ease-in-out lg:rounded-bl-xl ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
       >
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-bold text-amber-500 flex items-center gap-2">
