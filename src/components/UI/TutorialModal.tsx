@@ -63,6 +63,28 @@ export function TutorialModal() {
       icon: "🖱️"
     },
     {
+      title: <span className="whitespace-nowrap text-lg md:text-xl">Buku Panduan & Cetak Biru 📖</span>,
+      content: (
+        <div className="space-y-4">
+          <p className="text-sm md:text-base">Untuk membantu Anda membangun dengan presisi, kami telah menyiapkan pedoman resmi enPIneering:</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <a href="/docs/profil.pdf" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center bg-stone-800/80 hover:bg-stone-700 p-4 rounded-xl border border-stone-600 transition-colors shadow-lg">
+              <span className="text-4xl mb-2">📐</span>
+              <span className="font-bold text-amber-500 text-center">Katalog Profil</span>
+              <span className="text-xs text-stone-400 text-center mt-1">Daftar lengkap jenis profil bambu dan ukurannya</span>
+            </a>
+            <a href="/docs/prototype.pdf" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center bg-stone-800/80 hover:bg-stone-700 p-4 rounded-xl border border-stone-600 transition-colors shadow-lg">
+              <span className="text-4xl mb-2">🏠</span>
+              <span className="font-bold text-green-500 text-center">Cetak Biru (Blueprint)</span>
+              <span className="text-xs text-stone-400 text-center mt-1">Contoh panduan merakit rumah modular</span>
+            </a>
+          </div>
+          <p className="text-xs text-center text-stone-500 italic mt-2">Anda juga dapat membuka panduan ini kapan saja melalui menu Bantuan (?) di pojok kanan atas layar.</p>
+        </div>
+      ),
+      icon: "📚"
+    },
+    {
       title: <span className="whitespace-nowrap text-lg md:text-xl">Ekosistem Web3 & Multiplayer 🌐</span>,
       content: (
         <div className="space-y-3">
